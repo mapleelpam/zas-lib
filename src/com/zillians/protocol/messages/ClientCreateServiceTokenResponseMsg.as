@@ -1,9 +1,8 @@
 package com.zillians.protocol.messages
 {
 	import com.zillians.common.UUID;
-	import com.zillians.protocol.ProtocolBase;
 	
-	public class ClientCreateServiceTokenResponseMsg extends ProtocolBase
+	public class ClientCreateServiceTokenResponseMsg extends MessageBase
 	{
 		public var ServiceID:uint;
 		public var GatewayAddress:String;

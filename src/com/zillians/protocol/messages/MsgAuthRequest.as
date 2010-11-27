@@ -1,8 +1,7 @@
 package com.zillians.protocol.messages
 {
-	import com.zillians.protocol.ProtocolBase;
 
-	public class MsgAuthRequest extends ProtocolBase
+	public class MsgAuthRequest extends MessageBase
 	{
 		public var userName:String;
 		public var passWord:String;

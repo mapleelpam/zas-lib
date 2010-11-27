@@ -2,9 +2,8 @@ package com.zillians.protocol.messages
 {
 	
 	import mx.messaging.channels.StreamingAMFChannel;
-	import com.zillians.protocol.ProtocolBase;
 	
-	public class ClientCreateServiceTokenRequest extends ProtocolBase
+	public class ClientCreateServiceTokenRequest extends MessageBase
 	{
 		public var ServiceID:uint;
 		public var ServiceVersion:String;

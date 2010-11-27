@@ -30,26 +30,17 @@ package com.zillians.cloud
 				afterTokenServiceTokenRequestOK);//TokenRequest成功 
 		}
 		
-		public function init( u:String, p:String ):void
+		public function init( username:String, password:String ):void
 		{
 			SocketProxy.init(null);
 		
 			tokenService = new TokenService();
 			gameService = new GameService();
 			
-			//TODO? remove this line?
-			SocketProxy.setCurrentSocketService(tokenService.getServiceName());
-			
-			/* TODO: just using TokenService.login() */
-			SocketProxy.connect(
-				SystemService.getInstance().socketserver_ip
-				,SystemService.getInstance().socketserver_port
-				,tokenService.getServiceName() );
-			
 			tokenService.open(
 				SystemService.getInstance().socketserver_ip
 				,SystemService.getInstance().socketserver_port
-				, u, p
+				, username, password
 			);
 		}
 		
@@ -69,8 +60,6 @@ package com.zillians.cloud
 			var port:String = msg.GatewayAddress.substr(comment+1,msg.GatewayAddress.length);
 			
 			gameService.open( addr, Number(port), msg.ServiceToken );
-			//TODO? remove this line?
-			SocketProxy.setCurrentSocketService(gameService.getServiceName());
 		}
 	}
 }

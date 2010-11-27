@@ -1,8 +1,7 @@
 package com.zillians.protocol.messages
 {
-	import com.zillians.protocol.ProtocolBase;
 
-	public class MsgAuthResponse extends ProtocolBase
+	public class MsgAuthResponse extends MessageBase
 	{
 		public var result:int;
 		

@@ -99,8 +99,6 @@ package com.zillians.service
 			if(Logger.getInstance().isInfo()){
 				Logger.getInstance().log(Localizator.getInstance().getText("socket.connected"),"ServiceEngine");
 			}
-			//			atxt.text=Localizator.getInstance().getText("socket.connected");
-			//TODO? how to do?
 			//身份验证
 			login(mUsername, mPassword);
 		}
@@ -118,7 +116,7 @@ package com.zillians.service
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(ProtocolID.CLIENT_CREATE_TOKEN_RESPONSE_MSG),token_res_handler);
 			
-			SocketProxy.addSocketService(
+			SocketProxy.bind(
 				mName, new SocketService(mName));
 		}
 		

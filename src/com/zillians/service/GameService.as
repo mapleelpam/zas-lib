@@ -35,7 +35,7 @@ package com.zillians.service
 				String(ProtocolID.CLIENT_RPC_MSG),
 				at_client_rpc_handler);
 			
-			SocketProxy.addSocketService(
+			SocketProxy.bind(
 				mName
 				,new SocketService(mName));
 		}
@@ -65,7 +65,8 @@ package com.zillians.service
 
 			if(gameFunctionDispatcher!=null)
 				gameFunctionDispatcher.dispatchFunction(msg);
-			/*TODO: throw a error event or alert */
+			else
+				;/*TODO: throw a error event or alert */
 		}
 		private function service_open_res_handler(e:ZilliansEvent):void
 		{

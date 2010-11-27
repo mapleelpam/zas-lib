@@ -8,7 +8,7 @@ package com.zillians.proxy
 	import com.zillians.event.ZilliansEventDispatcher;
 	import com.zillians.event.ZilliansEvent;
 	import com.general.logger.Logger;
-	import com.zillians.protocol.ProtocolBase;
+	import com.zillians.protocol.messages.MessageBase;
 	import com.general.resource.Localizator;
 	import com.zillians.service.SocketService;
 	import com.zillians.common.utilities.ByteArrayUtils;
@@ -55,7 +55,7 @@ package com.zillians.proxy
 		 * @param socket
 		 * 
 		 */		
-		public static function addSocketService(serviceName:String,socket:SocketService):void{
+		public static function bind(serviceName:String,socket:SocketService):void{
 			socketPoolMap.insert(serviceName,socket);
 			socket.addEventListener(Event.CLOSE, function (e:ZilliansEvent):void{
 					if(Logger.getInstance().isInfo()){
@@ -98,13 +98,13 @@ package com.zillians.proxy
 		 * @return 
 		 * 
 		 */		
-		public static function setCurrentSocketService(serviceName:String):Boolean{
-			if(!socketPoolMap.containsKey(serviceName)){
-				return false;
-			}
-			currentSocketService=socketPoolMap.find(serviceName);
-			return true;
-		}
+//		public static function setCurrentSocketService(serviceName:String):Boolean{
+//			if(!socketPoolMap.containsKey(serviceName)){
+//				return false;
+//			}
+//			currentSocketService=socketPoolMap.find(serviceName);
+//			return true;
+//		}
 		
 		/**
 		 * 连接server 
@@ -114,11 +114,11 @@ package com.zillians.proxy
 		 * 
 		 */		
 		public static function connect(socket_url:String,socket_port:Number,serviceName:String):void{
-			if(StringTWLUtil.isEmpty(serviceName)){
-				currentSocketService.connSocket(socket_url,socket_port);
-			}else{
+//			if(StringTWLUtil.isEmpty(serviceName)){
+//				currentSocketService.connSocket(socket_url,socket_port);
+//			}else{
 				socketPoolMap.find(serviceName).connSocket(socket_url,socket_port);
-			}
+//			}
 		}
 		
 		/**
@@ -128,7 +128,7 @@ package com.zillians.proxy
 		 * @param serviceName
 		 * 
 		 */		
-		public static function sendMessage(scoketprotocol:uint,bm:ProtocolBase,serviceName:String):void{
+		public static function sendMessage(scoketprotocol:uint,bm:MessageBase,serviceName:String):void{
 			var bt:ByteArray=new ByteArray();
 			bt.endian=Endian.LITTLE_ENDIAN;
 //			bt.objectEncoding = BYTEARRAY_ENCODING; 
@@ -141,13 +141,13 @@ package com.zillians.proxy
 			bt.writeInt( payload.length );
 			bt.writeBytes( payload, 0 , payload.length );
 			//发送
-			if(StringTWLUtil.isEmpty(serviceName)){
-				currentSocketService.sendToServer(bt);
-			}else{
+//			if(StringTWLUtil.isEmpty(serviceName)){
+//				currentSocketService.sendToServer(bt);
+//			}else{
 				if(socketPoolMap.containsKey(serviceName)){
 					socketPoolMap.find(serviceName).sendToServer(bt);
 				}
-			}
+//			}
 		}
 		
 		//*****************************私有方法**************************************
@@ -195,7 +195,6 @@ package com.zillians.proxy
 		 */		
 		private static function doAfterReceiveData(msgType:uint,bt:ByteArray):void
 		{
-			trace(" SocketProxy msgType = "+msgType);
 			var re:ZilliansEvent=new ZilliansEvent(
 				ByteArrayUtils.convertByteArrayToObject(
 					bt,ProtocolIDMapper.getInstance().getProtocolClassPath(msgType))
