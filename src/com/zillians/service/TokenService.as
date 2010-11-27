@@ -4,17 +4,17 @@
  */
 package com.zillians.service
 {
-	import com.zillians.protocol.ProtocolIDMapper;
 	import com.general.logger.Logger;
-	import com.zillians.proxy.SocketProxy;
-	import com.zillians.common.utilities.ObjectTWLUtils;
 	import com.zillians.ProtocolID;
+	import com.zillians.common.utilities.ObjectTWLUtils;
 	import com.zillians.event.ZilliansEvent;
 	import com.zillians.event.ZilliansEventDispatcher;
+	import com.zillians.protocol.ProtocolIDMapper;
 	import com.zillians.protocol.messages.ClientCreateServiceTokenRequest;
 	import com.zillians.protocol.messages.ClientCreateServiceTokenResponseMsg;
 	import com.zillians.protocol.messages.MsgAuthRequest;
 	import com.zillians.protocol.messages.MsgAuthResponse;
+	import com.zillians.proxy.SocketProxy;
 	
 	/**
 	 * 身份验证服务类
@@ -55,7 +55,6 @@ package com.zillians.service
 			if(Logger.getInstance().isInfo()){
 				Logger.getInstance().log(e.data.toString(),"AMF1Test");
 			}
-			trace("auth - response ");
 			
 			var msg:MsgAuthResponse = MsgAuthResponse( e.data );
 			switch( msg.result ) {
@@ -74,9 +73,9 @@ package com.zillians.service
 			
 		}
 		
-		public function requestToken( serviceID:uint ) : void 
+		public function request_token( serviceID:uint ) : void 
 		{
-			var msg:ClientCreateServiceTokenRequest = new ClientCreateServiceTokenRequest(serviceID,"1","0");
+			var msg:ClientCreateServiceTokenRequest = new ClientCreateServiceTokenRequest(serviceID,"1","0");	
 			SocketProxy.sendMessage(ProtocolID.CLIENT_CREATE_TOKEN_REQUEST_MSG,msg,getServiceName());
 		}
 		
@@ -92,24 +91,24 @@ package com.zillians.service
 			}
 		}
 		
-		public function TokenService()
+		private var mName:String = "TokenService";
+		public function TokenService( name:String = "TokenService" )
 		{
+			mName = name;
+			
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(ProtocolID.AUTH_RESPONSE_MSG),login_res_handler);
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(ProtocolID.CLIENT_CREATE_TOKEN_RESPONSE_MSG),token_res_handler);
+			
+			SocketProxy.addSocketService(
+				mName
+				,new SocketService(mName));
 		}
-		
-//		private static var instance:TokenService;	
-//		public static function getInstance():TokenService
-//		{
-//			if(instance==null)	instance=new TokenService();
-//			return instance;
-//		}
 		
 		public function getServiceName():String
 		{
-			return "TokenService";
+			return mName;
 		}
 	}
 }

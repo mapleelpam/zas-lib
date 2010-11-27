@@ -14,7 +14,6 @@
 			import generated.atTarget.*;
 					
 			private var svcEngine:ServiceEngine; 
-			private var gameService:GameService;
 			private function init():void{
 				SystemService.getInstance().addEventListener(SystemService.t_sys_config_loaded,afterSysConfigLoadSuccess);
 				SystemService.getInstance().initSystem();
@@ -41,10 +40,9 @@
 			{
 				trace(" @global AuthOK");
 				currentState = "HelloState";
-				gameService = GameService.getInstance();
 				
 				// Attach Stub (Generate by compiler) and Service
-				gameService.gameFunctionDispatcher = new AtClientFunctionDispatcher(); 
+				svcEngine.gameService.gameFunctionDispatcher = new AtClientFunctionDispatcher(); 
 				
 				testzs.setPlayer = function( id:uint ):void
 				{

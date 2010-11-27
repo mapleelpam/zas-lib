@@ -32,7 +32,7 @@ package generated.atTarget
 			
 			var msg:ClientRemoteProcedureCallMsgSend = 
 				new ClientRemoteProcedureCallMsgSend( /*FunctionID*/0x06, /*param*/params );
-			SocketProxy.sendMessage(ProtocolID.CLIENT_RPC_MSG, msg, SocketProxy.socketService_name_game);
+			SocketProxy.sendMessage(ProtocolID.CLIENT_RPC_MSG, msg, "GameService" );
 		}
 	}
 }

@@ -17,15 +17,10 @@ package com.zillians.service
 	public class ServiceEngine extends EventDispatcher
 	{
 		private var tokenService:TokenService;
-		private var gameService:GameService;
+		public var gameService:GameService;
 		
 		public function ServiceEngine()
-		{
-			/* TODO: Move To TokenService Inside ! */
-			ZilliansEventDispatcher.getInstance().addEventListener(
-				SocketProxy.socketService_name_token+Event.CONNECT,
-				socket_connect_handler);//身份验证服务器连接成功	
-			
+		{	
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				TokenService.auth_response_ok,
 				afterTokenServiceAuthOK);//身份验证服务器認證成功
@@ -42,14 +37,15 @@ package com.zillians.service
 			SocketProxy.init(null);
 		
 			tokenService = new TokenService();
-			/* move to Service Init */
-			SocketProxy.addSocketService(
-				tokenService.getServiceName()
-				,new SocketService(tokenService.getServiceName()));
-			SocketProxy.addSocketService(
-				GameService.getInstance().getServiceName()
-				,new SocketService(GameService.getInstance().getServiceName()));
+			gameService = new GameService();
+			
+			//TODO? remove this line?
 			SocketProxy.setCurrentSocketService(tokenService.getServiceName());
+			
+			/* TODO: Move To TokenService Inside ! */
+			ZilliansEventDispatcher.getInstance().addEventListener(
+				tokenService.getServiceName()+Event.CONNECT,
+				socket_connect_handler);//身份验证服务器连接成功
 			
 			/* TODO: just using TokenService.login() */
 			SocketProxy.connect(
@@ -60,6 +56,7 @@ package com.zillians.service
 			mUsername = u;
 			mPassword = p;
 		}
+		
 		//连接成功
 		private function socket_connect_handler(event:Event):void 
 		{
@@ -75,7 +72,7 @@ package com.zillians.service
 		private function afterTokenServiceAuthOK(event:Event):void
 		{
 			trace(" @ServiceEngine AuthOK");
-			tokenService.requestToken( 0 );//GameService		
+			tokenService.request_token( 0 );//GameService		
 		}
 		private function afterTokenServiceTokenRequestOK(event:ZilliansEvent):void
 		{
@@ -85,7 +82,9 @@ package com.zillians.service
 			var addr:String = msg.GatewayAddress.substr(0,comment);
 			var port:String = msg.GatewayAddress.substr(comment+1,msg.GatewayAddress.length);
 			
-			GameService.getInstance().open( addr, Number(port), msg.ServiceToken );
+			gameService.open( addr, Number(port), msg.ServiceToken );
+			//TODO? remove this line?
+			SocketProxy.setCurrentSocketService(gameService.getServiceName());
 		}
 	}
 }

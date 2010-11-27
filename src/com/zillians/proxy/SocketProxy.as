@@ -30,8 +30,8 @@ package com.zillians.proxy
 	public class SocketProxy 
 	{
 		public static const socket_data_receive:String="socket_data_receive";
-		public static const socketService_name_token:String="TokenService";
-		public static const socketService_name_game:String="GameService";
+//		public static const socketService_name_token:String="TokenService";
+//		public static const socketService_name_game:String="GameService";
 		
 		private static var socketPoolMap:HashMap; 
 		private static var currentSocketService:SocketService;

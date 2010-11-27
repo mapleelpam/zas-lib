@@ -12,6 +12,7 @@ package com.zillians.service
 	import com.zillians.protocol.messages.*;
 	import com.zillians.service.gameservice.IGameFunctionDispatcher;
 	import com.zillians.stub.*;
+	import com.zillians.proxy.SocketProxy;
 	
 	import flash.events.Event;
 	import flash.utils.ByteArray;
@@ -19,10 +20,13 @@ package com.zillians.service
 	
 	public class GameService
 	{
-		public function GameService()
+		private var mName:String = "GameService";
+		public function GameService( name:String = "GameService" )
 		{
+			mName = name;
+			
 			ZilliansEventDispatcher.getInstance().addEventListener(
-				SocketProxy.socketService_name_game+Event.CONNECT,
+				mName+Event.CONNECT,
 				socket_connect_handler);//身份验证服务器连接成功
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(ProtocolID.CLIENT_SERVICE_OPEN_RESPONSE_MSG),
@@ -30,6 +34,10 @@ package com.zillians.service
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(ProtocolID.CLIENT_RPC_MSG),
 				at_client_rpc_handler);
+			
+			SocketProxy.addSocketService(
+				mName
+				,new SocketService(mName));
 		}
 		public function getServiceID():uint
 		{
@@ -66,7 +74,7 @@ package com.zillians.service
 		private function serviceOpen():void
 		{
 			var msg:ClientServiceOpenRequestMsg = new ClientServiceOpenRequestMsg(getServiceID(),serviceToken);
-			SocketProxy.sendMessage(ProtocolID.CLIENT_SERVICE_OPEN_REQUEST_MSG ,msg,SocketProxy.socketService_name_game);
+			SocketProxy.sendMessage(ProtocolID.CLIENT_SERVICE_OPEN_REQUEST_MSG ,msg,mName);
 		}
 		
 		private var serviceToken:UUID;
@@ -75,16 +83,7 @@ package com.zillians.service
 			serviceToken = token;	
 			
 			SocketProxy.connect( address, port
-				,SocketProxy.socketService_name_game);
+				,mName);
 		}
-		
-		
-		static private var instance:GameService;
-		static public function getInstance():GameService
-		{
-			if( instance==null )	instance = new GameService();
-			return instance;
-		}
-		
 	}
 }
