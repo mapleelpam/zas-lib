@@ -4,7 +4,7 @@ package generated.atTarget
 	import flash.utils.Endian;
 	
 	import com.zillians.protocol.messages.ClientRemoteProcedureCallMsgSend;
-	import com.zillians.Protocols;
+	import com.zillians.ProtocolID;
 	import com.general.proxy.SocketProxy;
 	
 	public class testzs
@@ -32,7 +32,7 @@ package generated.atTarget
 			
 			var msg:ClientRemoteProcedureCallMsgSend = 
 				new ClientRemoteProcedureCallMsgSend( /*FunctionID*/0x06, /*param*/params );
-			SocketProxy.sendMessage(Protocols.ClientRemoteProcedureCallMsg, msg, SocketProxy.socketService_name_game);
+			SocketProxy.sendMessage(ProtocolID.CLIENT_RPC_MSG, msg, SocketProxy.socketService_name_game);
 		}
 	}
 }

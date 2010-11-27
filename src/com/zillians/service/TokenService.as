@@ -8,7 +8,7 @@ package com.zillians.service
 	import com.general.logger.Logger;
 	import com.general.proxy.SocketProxy;
 	import com.zillians.common.utilities.ObjectTWLUtils;
-	import com.zillians.Protocols;
+	import com.zillians.ProtocolID;
 	import com.zillians.event.ZilliansEvent;
 	import com.zillians.event.ZilliansEventDispatcher;
 	import com.zillians.protocol.messages.ClientCreateServiceTokenRequest;
@@ -48,7 +48,7 @@ package com.zillians.service
 		public function login(userName:String, passWord:String ) : void 
 		{
 			var msgAuthRequest:MsgAuthRequest=new MsgAuthRequest(userName,passWord);
-			SocketProxy.sendMessage(Protocols.MsgAuthRequest,msgAuthRequest,SocketProxy.socketService_name_token);
+			SocketProxy.sendMessage(ProtocolID.AUTH_REQUEST_MSG,msgAuthRequest,getServiceName());
 		}
 		
 		private function login_res_handler(e:ZilliansEvent):void{
@@ -77,7 +77,7 @@ package com.zillians.service
 		public function requestToken( serviceID:uint ) : void 
 		{
 			var msg:ClientCreateServiceTokenRequest = new ClientCreateServiceTokenRequest(serviceID,"1","0");
-			SocketProxy.sendMessage(Protocols.ClientCreateServiceTokenRequestMsg,msg,SocketProxy.socketService_name_token);
+			SocketProxy.sendMessage(ProtocolID.CLIENT_CREATE_TOKEN_REQUEST_MSG,msg,getServiceName());
 		}
 		
 		private function token_res_handler(e:ZilliansEvent):void
@@ -95,18 +95,21 @@ package com.zillians.service
 		public function TokenService()
 		{
 			ZilliansEventDispatcher.getInstance().addEventListener(
-				String(Protocols.MsgAuthResponse),login_res_handler);
+				String(ProtocolID.AUTH_RESPONSE_MSG),login_res_handler);
 			ZilliansEventDispatcher.getInstance().addEventListener(
-				String(Protocols.ClientCreateServiceTokenResponseMsg),token_res_handler);
+				String(ProtocolID.CLIENT_CREATE_TOKEN_RESPONSE_MSG),token_res_handler);
 		}
 		
-		private static var instance:TokenService;
-		
+		private static var instance:TokenService;	
 		public static function getInstance():TokenService
 		{
 			if(instance==null)	instance=new TokenService();
 			return instance;
 		}
 		
+		public function getServiceName():String
+		{
+			return "TokenService";
+		}
 	}
 }

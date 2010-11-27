@@ -2,7 +2,7 @@
  * Copyright 
  *
  */
-package com.general.service
+package com.zillians.service
 {
 	import com.general.logger.Logger;
 	import com.general.proxy.SocketProxy;

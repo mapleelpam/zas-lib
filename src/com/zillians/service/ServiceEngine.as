@@ -17,6 +17,7 @@ package com.zillians.service
 	{
 		public function ServiceEngine()
 		{
+			/* TODO: Move To TokenService Inside ! */
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				SocketProxy.socketService_name_token+Event.CONNECT,
 				socket_connect_handler);//身份验证服务器连接成功	
@@ -34,11 +35,14 @@ package com.zillians.service
 		private var mPassword:String;
 		public function init( u:String, p:String ):void
 		{
+			/*TODO: Remove SocketProxyInit - it doesn't make sense */
 			SocketProxy.init(null);
+			
+			/* TODO: just using TokenService.login() */
 			SocketProxy.connect(
 				SystemService.getInstance().socketserver_ip
 				,SystemService.getInstance().socketserver_port
-				,SocketProxy.socketService_name_token);
+				,TokenService.getInstance().getServiceName() );
 			
 			mUsername = u;
 			mPassword = p;

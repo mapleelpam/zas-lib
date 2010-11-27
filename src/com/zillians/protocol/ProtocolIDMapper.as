@@ -1,7 +1,7 @@
 package com.zillians.protocol
 {
 	import de.polygonal.ds.HashMap;
-	import com.zillians.Protocols;
+	import com.zillians.ProtocolID;
 	import com.zillians.protocol.messages.*;
 	import com.zillians.common.utilities.ObjectTWLUtils;
 	
@@ -38,16 +38,16 @@ package com.zillians.protocol
 		private function registProtocolsToModle():void
 		{
 			setProtocolClassPath(
-				Protocols.MsgAuthResponse
+				ProtocolID.AUTH_RESPONSE_MSG
 				,ObjectTWLUtils.getClassPath(MsgAuthResponse));
 			setProtocolClassPath(
-				Protocols.ClientCreateServiceTokenResponseMsg
+				ProtocolID.CLIENT_CREATE_TOKEN_RESPONSE_MSG
 				,ObjectTWLUtils.getClassPath(ClientCreateServiceTokenResponseMsg));
 			setProtocolClassPath(
-				Protocols.ClientServiceOpenResponseMsg
+				ProtocolID.CLIENT_SERVICE_OPEN_RESPONSE_MSG
 				,ObjectTWLUtils.getClassPath(ClientServiceOpenResponseMsg));
 			setProtocolClassPath(
-				Protocols.ClientRemoteProcedureCallMsg
+				ProtocolID.CLIENT_RPC_MSG
 				,ObjectTWLUtils.getClassPath(ClientRemoteProcedureCallMsg));
 			
 			/*TODO: others? only need to map from server ? */

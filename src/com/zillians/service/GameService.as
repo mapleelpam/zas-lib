@@ -1,14 +1,14 @@
 package com.zillians.service
 {
-	import com.zillians.protocol.ProtocolIDMapper;
 	import com.general.logger.Logger;
 	import com.general.proxy.SocketProxy;
 	import com.general.resource.Localizator;
-	import com.zillians.Protocols;
+	import com.zillians.ProtocolID;
 	import com.zillians.common.UUID;
 	import com.zillians.common.utilities.ObjectTWLUtils;
 	import com.zillians.event.ZilliansEvent;
 	import com.zillians.event.ZilliansEventDispatcher;
+	import com.zillians.protocol.ProtocolIDMapper;
 	import com.zillians.protocol.messages.*;
 	import com.zillians.service.gameservice.IGameFunctionDispatcher;
 	import com.zillians.stub.*;
@@ -24,24 +24,20 @@ package com.zillians.service
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				SocketProxy.socketService_name_game+Event.CONNECT,
 				socket_connect_handler);//身份验证服务器连接成功
-			
 			ZilliansEventDispatcher.getInstance().addEventListener(
-				String(Protocols.ClientServiceOpenResponseMsg),service_open_res_handler);
-			/*TODO -- Move to Somewhere other */
-//			ProtocolIDMapper.getInstance().setProtocolClassPath(
-//				Protocols.ClientServiceOpenResponseMsg
-//				,ObjectTWLUtils.getClassPath(ClientServiceOpenResponseMsg));
-//			
+				String(ProtocolID.CLIENT_SERVICE_OPEN_RESPONSE_MSG),
+				service_open_res_handler);
 			ZilliansEventDispatcher.getInstance().addEventListener(
-				String(Protocols.ClientRemoteProcedureCallMsg),rpc_invoker);
-			/*TODO -- Move to Somewhere other */
-//			ProtocolIDMapper.getInstance().setProtocolClassPath(
-//				Protocols.ClientRemoteProcedureCallMsg
-//				,ObjectTWLUtils.getClassPath(ClientRemoteProcedureCallMsg));
+				String(ProtocolID.CLIENT_RPC_MSG),
+				at_client_rpc_handler);
 		}
 		public function getServiceID():uint
 		{
 			return 0x00;
+		}
+		public function getServiceName():String
+		{
+			return "GameService";
 		}
 		private function socket_connect_handler(event:Event):void 
 		{
@@ -53,7 +49,7 @@ package com.zillians.service
 		}
 		
 		public var gameFunctionDispatcher:IGameFunctionDispatcher;
-		private function rpc_invoker(e:ZilliansEvent):void
+		private function at_client_rpc_handler(e:ZilliansEvent):void
 		{
 			trace("@GameSerice:rpc_ivoker");	
 			var msg:ClientRemoteProcedureCallMsg = ClientRemoteProcedureCallMsg(e.data);
@@ -70,7 +66,7 @@ package com.zillians.service
 		private function serviceOpen():void
 		{
 			var msg:ClientServiceOpenRequestMsg = new ClientServiceOpenRequestMsg(getServiceID(),serviceToken);
-			SocketProxy.sendMessage(Protocols.ClientServiceOpenRequestMsg ,msg,SocketProxy.socketService_name_game);
+			SocketProxy.sendMessage(ProtocolID.CLIENT_SERVICE_OPEN_REQUEST_MSG ,msg,SocketProxy.socketService_name_game);
 		}
 		
 		private var serviceToken:UUID;

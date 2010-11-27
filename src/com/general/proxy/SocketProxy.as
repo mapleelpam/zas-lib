@@ -10,7 +10,7 @@ package com.general.proxy
 	import com.general.logger.Logger;
 	import com.zillians.protocol.ProtocolBase;
 	import com.general.resource.Localizator;
-	import com.general.service.SocketService;
+	import com.zillians.service.SocketService;
 	import com.zillians.common.utilities.ByteArrayUtils;
 	import com.zillians.common.utilities.StringTWLUtil;
 	
@@ -30,8 +30,8 @@ package com.general.proxy
 	public class SocketProxy 
 	{
 		public static const socket_data_receive:String="socket_data_receive";
-		public static const socketService_name_token:String="Token";
-		public static const socketService_name_game:String="Game";
+		public static const socketService_name_token:String="TokenService";
+		public static const socketService_name_game:String="GameService";
 		
 		private static var socketPoolMap:HashMap; 
 		private static var currentSocketService:SocketService;
