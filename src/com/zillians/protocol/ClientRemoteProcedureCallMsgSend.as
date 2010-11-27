@@ -1,0 +1,19 @@
+package com.zillians.protocol
+{
+	import flash.utils.ByteArray;
+	public class ClientRemoteProcedureCallMsgSend extends ProtocolBase
+	{
+		public var FunctionID:uint;
+		public var Parameters:ByteArray;
+		
+		public function ClientRemoteProcedureCallMsgSend(id:uint, data:ByteArray )
+		{
+			super();
+			addUIntField("FunctionID");
+			addParamField("Parameters");
+			
+			FunctionID = id;
+			Parameters = data;
+		}
+	}
+}

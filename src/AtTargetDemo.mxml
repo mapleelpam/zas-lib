@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="init()" xmlns:s="library://ns.adobe.com/flex/spark">
+	<mx:Script>
+		<![CDATA[
+			import com.general.logger.Logger;
+			import com.general.proxy.SocketProxy;
+			import com.general.resource.Localizator;
+			import com.general.service.SystemService;
+			import com.zillians.event.ZilliansEventDispatcher;
+			import com.zillians.service.GameService;
+			import com.zillians.service.ServiceEngine;
+			import com.zillians.service.TokenService;
+					
+			private var svcEngine:ServiceEngine; 
+			private var gameService:GameService;
+			private function init():void{
+				SystemService.getInstance().addEventListener(SystemService.t_sys_config_loaded,afterSysConfigLoadSuccess);
+				SystemService.getInstance().initSystem();
+				
+				svcEngine = new ServiceEngine();
+				currentState = "LoginState";
+			}
+			
+			private function afterSysConfigLoadSuccess(e:Event):void{
+				if(Logger.getInstance().isInfo()){
+					Logger.getInstance().log(Localizator.getInstance().getText("system.init.success"),"AMF1Test");
+				}
+			}
+			
+			private function loginButtonPress(e:MouseEvent):void{
+				trace("login press");
+				svcEngine.init( passInput.text, userInput.text );
+				
+				ZilliansEventDispatcher.getInstance().addEventListener(
+					TokenService.auth_response_ok,
+					afterAuthOK);//身份验证服务器認證成功
+			}
+			private function afterAuthOK(event:Event):void
+			{
+				trace(" @global AuthOK");
+				currentState = "HelloState";
+				gameService = GameService.getInstance();
+			}
+		]]>
+	</mx:Script>
+	<mx:states>
+		<mx:State name="HelloState">
+			<mx:AddChild position="lastChild">
+				<mx:TextArea x="55" y="27" width="371" height="310"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="509" y="37" label="SayHeloTo 1" click="gameService.sayHelloTo(1)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="509" y="104" label="SayHeloTo 3" click="gameService.sayHelloTo(3)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="509" y="139" label="SayHeloTo 4" click="gameService.sayHelloTo(4)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="509" y="174" label="SayHeloTo 5" click="gameService.sayHelloTo(5)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="509" y="72" label="SayHeloTo 2" click="gameService.sayHelloTo(2)"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="LoginState">
+			<mx:AddChild position="lastChild">
+				<s:Label x="218" y="103" text="UserName:&#xd;"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="339" y="229" label="Login" width="160" click="loginButtonPress(event)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="218" y="156" text="Password"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="339" y="102" text="maple_1" id="userInput"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="339" y="156" text="hello_2" displayAsPassword="true" id="passInput"/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+</mx:Application>
