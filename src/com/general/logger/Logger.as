@@ -87,9 +87,7 @@ package com.general.logger
 		private static var instance:Logger;
 		
 		public static function getInstance():Logger{
-			if(instance==null){
-				instance=new Logger(); 
-			}
+			if(instance==null) instance=new Logger(); 
 			return instance;
 		}
 		

@@ -5,6 +5,7 @@
 package com.zillians.service
 {
 	import com.general.logger.Logger;
+	import com.general.resource.Localizator;
 	import com.zillians.ProtocolID;
 	import com.zillians.common.utilities.ObjectTWLUtils;
 	import com.zillians.event.ZilliansEvent;
@@ -15,6 +16,8 @@ package com.zillians.service
 	import com.zillians.protocol.messages.MsgAuthRequest;
 	import com.zillians.protocol.messages.MsgAuthResponse;
 	import com.zillians.proxy.SocketProxy;
+	
+	import flash.events.Event;
 	
 	/**
 	 * 身份验证服务类
@@ -90,6 +93,17 @@ package com.zillians.service
 				ZilliansEventDispatcher.getInstance().dispatchEvent( e );
 			}
 		}
+		//连接成功
+		private function socket_connect_handler(event:Event):void 
+		{
+			if(Logger.getInstance().isInfo()){
+				Logger.getInstance().log(Localizator.getInstance().getText("socket.connected"),"ServiceEngine");
+			}
+			//			atxt.text=Localizator.getInstance().getText("socket.connected");
+			//TODO? how to do?
+			//身份验证
+			login(mUsername, mPassword);
+		}
 		
 		private var mName:String = "TokenService";
 		public function TokenService( name:String = "TokenService" )
@@ -97,18 +111,28 @@ package com.zillians.service
 			mName = name;
 			
 			ZilliansEventDispatcher.getInstance().addEventListener(
+				mName+Event.CONNECT,
+				socket_connect_handler);//身份验证服务器连接成功
+			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(ProtocolID.AUTH_RESPONSE_MSG),login_res_handler);
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(ProtocolID.CLIENT_CREATE_TOKEN_RESPONSE_MSG),token_res_handler);
 			
 			SocketProxy.addSocketService(
-				mName
-				,new SocketService(mName));
+				mName, new SocketService(mName));
 		}
 		
 		public function getServiceName():String
 		{
 			return mName;
+		}
+		private var mUsername:String;
+		private var mPassword:String;
+		public function open( address:String, port:Number, username:String, password:String ):void
+		{
+			SocketProxy.connect( address, port, mName );
+			mUsername = username;
+			mPassword = password;
 		}
 	}
 }

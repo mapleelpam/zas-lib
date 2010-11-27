@@ -30,8 +30,6 @@ package com.zillians.service
 				afterTokenServiceTokenRequestOK);//TokenRequest成功 
 		}
 		
-		private var mUsername:String;
-		private var mPassword:String;
 		public function init( u:String, p:String ):void
 		{
 			SocketProxy.init(null);
@@ -42,38 +40,26 @@ package com.zillians.service
 			//TODO? remove this line?
 			SocketProxy.setCurrentSocketService(tokenService.getServiceName());
 			
-			/* TODO: Move To TokenService Inside ! */
-			ZilliansEventDispatcher.getInstance().addEventListener(
-				tokenService.getServiceName()+Event.CONNECT,
-				socket_connect_handler);//身份验证服务器连接成功
-			
 			/* TODO: just using TokenService.login() */
 			SocketProxy.connect(
 				SystemService.getInstance().socketserver_ip
 				,SystemService.getInstance().socketserver_port
 				,tokenService.getServiceName() );
 			
-			mUsername = u;
-			mPassword = p;
+			tokenService.open(
+				SystemService.getInstance().socketserver_ip
+				,SystemService.getInstance().socketserver_port
+				, u, p
+			);
 		}
 		
-		//连接成功
-		private function socket_connect_handler(event:Event):void 
-		{
-			if(Logger.getInstance().isInfo()){
-				Logger.getInstance().log(Localizator.getInstance().getText("socket.connected"),"ServiceEngine");
-			}
-//			atxt.text=Localizator.getInstance().getText("socket.connected");
-			//TODO? how to do?
-			//身份验证
-			tokenService.login(mUsername, mPassword);
-		}
 		//認證成功
 		private function afterTokenServiceAuthOK(event:Event):void
 		{
 			trace(" @ServiceEngine AuthOK");
-			tokenService.request_token( 0 );//GameService		
+			tokenService.request_token( gameService.getServiceID() );//GameService		
 		}
+		//取得Token : TODO - Move to Service inside
 		private function afterTokenServiceTokenRequestOK(event:ZilliansEvent):void
 		{
 			trace(" @ServiceEngine TokenOK");

@@ -105,7 +105,9 @@ package com.zillians.service
 						bt.endian = Endian.LITTLE_ENDIAN;
 						connect.readBytes(bt,0,len);
 						
-						var event:ZilliansEvent = new ZilliansEvent({serviceName:this.serviceName,t:typeId,d:bt},SocketProxy.socket_data_receive);
+						var event:ZilliansEvent = new ZilliansEvent(
+							{serviceName:this.serviceName,t:typeId,d:bt}
+							,SocketProxy.socket_data_receive);
 						this.dispatchEvent( event );
 						break;
 					}

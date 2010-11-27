@@ -27,7 +27,7 @@ package com.zillians.service
 			
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				mName+Event.CONNECT,
-				socket_connect_handler);//身份验证服务器连接成功
+				socket_connect_handler);//GameServiceConnect
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(ProtocolID.CLIENT_SERVICE_OPEN_RESPONSE_MSG),
 				service_open_res_handler);
@@ -81,9 +81,7 @@ package com.zillians.service
 		public function open( address:String, port:Number, token:UUID ):void
 		{
 			serviceToken = token;	
-			
-			SocketProxy.connect( address, port
-				,mName);
+			SocketProxy.connect( address, port, mName );
 		}
 	}
 }
