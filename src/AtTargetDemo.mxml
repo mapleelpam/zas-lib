@@ -10,6 +10,8 @@
 			import com.zillians.service.GameService;
 			import com.zillians.service.ServiceEngine;
 			import com.zillians.service.TokenService;
+			
+			import generated.atTarget.*;
 					
 			private var svcEngine:ServiceEngine; 
 			private var gameService:GameService;
@@ -40,13 +42,29 @@
 				trace(" @global AuthOK");
 				currentState = "HelloState";
 				gameService = GameService.getInstance();
+				
+				// Attach Stub (Generate by compiler) and Service
+				gameService.gameFunctionDispatcher = new AtClientFunctionDispatcher(); 
+				
+				testzs.setPlayer = function( id:uint ):void
+				{
+					atext.text += "setPlayer("+id+")\n";
+				}
+				testzs.cantHearYou = function( id:uint ):void
+				{
+					atext.text += "cantHearYou("+id+")\n";
+				}
+				testzs.hearHello = function( id:uint ):void
+				{
+					atext.text += "hearYou("+id+")\n";
+				}
 			}
 		]]>
 	</mx:Script>
 	<mx:states>
 		<mx:State name="HelloState">
 			<mx:AddChild position="lastChild">
-				<mx:TextArea x="55" y="27" width="371" height="310"/>
+				<mx:TextArea x="55" y="27" width="371" height="310" id="atext"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Button x="509" y="37" label="SayHeloTo 1" click="gameService.sayHelloTo(1)"/>

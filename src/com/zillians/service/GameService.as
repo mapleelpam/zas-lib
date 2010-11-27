@@ -10,6 +10,7 @@ package com.zillians.service
 	import com.zillians.event.ZilliansEvent;
 	import com.zillians.event.ZilliansEventDispatcher;
 	import com.zillians.protocol.*;
+	import com.zillians.service.gameservice.IGameFunctionDispatcher;
 	import com.zillians.stub.*;
 	
 	import flash.events.Event;
@@ -50,36 +51,17 @@ package com.zillians.service
 			//serviceOpen
 			serviceOpen();
 		}
+		
+		public var gameFunctionDispatcher:IGameFunctionDispatcher;
 		private function rpc_invoker(e:ZilliansEvent):void
 		{
 			trace("@GameSerice:rpc_ivoker");	
 			var msg:ClientRemoteProcedureCallMsg = ClientRemoteProcedureCallMsg(e.data);
 			trace("function id "+msg.FunctionID);
-//			trace("param "+msg.Parameters.readUnsignedByte());
-			
-			switch( msg.FunctionID ){
-				case 0x05:
-				{
-					var id:int = msg.Parameters.readUnsignedInt();
-					ClientFunctions.setPlayer( id );
-					break;
-				}
-				case 0x07:
-				{
-					var id:int = msg.Parameters.readUnsignedInt();
-					ClientFunctions.cantHearYou(id);
-					break;
-				}
-				case 0x08:
-				{
-					var id:int = msg.Parameters.readUnsignedInt();
-					ClientFunctions.hearHello(id);
-					break;
-				}
-				default:
-					trace(" GameService: unresolved functionID "+msg.FunctionID);
-					break;
-			}
+
+			if(gameFunctionDispatcher!=null)
+				gameFunctionDispatcher.dispatchFunction(msg);
+			/*TODO: throw a error event or alert */
 		}
 		private function service_open_res_handler(e:ZilliansEvent):void
 		{
