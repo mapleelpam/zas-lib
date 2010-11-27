@@ -100,12 +100,12 @@ package com.zillians.service
 				String(ProtocolID.CLIENT_CREATE_TOKEN_RESPONSE_MSG),token_res_handler);
 		}
 		
-		private static var instance:TokenService;	
-		public static function getInstance():TokenService
-		{
-			if(instance==null)	instance=new TokenService();
-			return instance;
-		}
+//		private static var instance:TokenService;	
+//		public static function getInstance():TokenService
+//		{
+//			if(instance==null)	instance=new TokenService();
+//			return instance;
+//		}
 		
 		public function getServiceName():String
 		{

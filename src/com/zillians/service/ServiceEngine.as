@@ -1,14 +1,14 @@
 package com.zillians.service
 {
 	import com.general.logger.Logger;
-	import com.zillians.proxy.SocketProxy;
 	import com.general.resource.Localizator;
 	import com.general.service.SystemService;
 	import com.zillians.event.ZilliansEvent;
 	import com.zillians.event.ZilliansEventDispatcher;
 	import com.zillians.protocol.messages.ClientCreateServiceTokenResponseMsg;
-	import com.zillians.service.TokenService;
+	import com.zillians.proxy.SocketProxy;
 	import com.zillians.service.GameService;
+	import com.zillians.service.TokenService;
 	
 	import flash.events.*;
 	
@@ -16,6 +16,9 @@ package com.zillians.service
 	
 	public class ServiceEngine extends EventDispatcher
 	{
+		private var tokenService:TokenService;
+		private var gameService:GameService;
+		
 		public function ServiceEngine()
 		{
 			/* TODO: Move To TokenService Inside ! */
@@ -38,20 +41,21 @@ package com.zillians.service
 		{
 			SocketProxy.init(null);
 		
+			tokenService = new TokenService();
 			/* move to Service Init */
 			SocketProxy.addSocketService(
-				TokenService.getInstance().getServiceName()
-				,new SocketService(TokenService.getInstance().getServiceName()));
+				tokenService.getServiceName()
+				,new SocketService(tokenService.getServiceName()));
 			SocketProxy.addSocketService(
 				GameService.getInstance().getServiceName()
 				,new SocketService(GameService.getInstance().getServiceName()));
-			SocketProxy.setCurrentSocketService(TokenService.getInstance().getServiceName());
+			SocketProxy.setCurrentSocketService(tokenService.getServiceName());
 			
 			/* TODO: just using TokenService.login() */
 			SocketProxy.connect(
 				SystemService.getInstance().socketserver_ip
 				,SystemService.getInstance().socketserver_port
-				,TokenService.getInstance().getServiceName() );
+				,tokenService.getServiceName() );
 			
 			mUsername = u;
 			mPassword = p;
@@ -65,13 +69,13 @@ package com.zillians.service
 //			atxt.text=Localizator.getInstance().getText("socket.connected");
 			//TODO? how to do?
 			//身份验证
-			TokenService.getInstance().login(mUsername, mPassword);
+			tokenService.login(mUsername, mPassword);
 		}
 		//認證成功
 		private function afterTokenServiceAuthOK(event:Event):void
 		{
 			trace(" @ServiceEngine AuthOK");
-			TokenService.getInstance().requestToken( 0 );//GameService		
+			tokenService.requestToken( 0 );//GameService		
 		}
 		private function afterTokenServiceTokenRequestOK(event:ZilliansEvent):void
 		{
