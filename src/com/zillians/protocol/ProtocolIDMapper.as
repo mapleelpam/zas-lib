@@ -1,7 +1,6 @@
 package com.zillians.protocol
 {
 	import de.polygonal.ds.HashMap;
-	import com.zillians.ProtocolID;
 	import com.zillians.protocol.messages.*;
 	import com.zillians.common.utilities.ObjectTWLUtils;
 	

@@ -1,4 +1,4 @@
-package com.zillians
+package com.zillians.protocol
 {
 	public class ProtocolID
 	{

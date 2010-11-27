@@ -6,7 +6,7 @@ package com.zillians.service
 {
 	import com.general.logger.Logger;
 	import com.general.resource.Localizator;
-	import com.zillians.ProtocolID;
+	import com.zillians.protocol.ProtocolID;
 	import com.zillians.common.utilities.ObjectTWLUtils;
 	import com.zillians.event.ZilliansEvent;
 	import com.zillians.event.ZilliansEventDispatcher;

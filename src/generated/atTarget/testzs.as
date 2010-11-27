@@ -4,7 +4,7 @@ package generated.atTarget
 	import flash.utils.Endian;
 	
 	import com.zillians.protocol.messages.ClientRemoteProcedureCallMsgSend;
-	import com.zillians.ProtocolID;
+	import com.zillians.protocol.ProtocolID;
 	import com.zillians.proxy.SocketProxy;
 	
 	public class testzs

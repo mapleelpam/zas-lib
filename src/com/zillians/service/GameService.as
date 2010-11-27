@@ -3,7 +3,7 @@ package com.zillians.service
 	import com.general.logger.Logger;
 	import com.zillians.proxy.SocketProxy;
 	import com.general.resource.Localizator;
-	import com.zillians.ProtocolID;
+	import com.zillians.protocol.ProtocolID;
 	import com.zillians.common.UUID;
 	import com.zillians.common.utilities.ObjectTWLUtils;
 	import com.zillians.event.ZilliansEvent;
