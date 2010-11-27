@@ -6,7 +6,7 @@ package com.zillians.service
 {
 	import com.zillians.protocol.ProtocolIDMapper;
 	import com.general.logger.Logger;
-	import com.general.proxy.SocketProxy;
+	import com.zillians.proxy.SocketProxy;
 	import com.zillians.common.utilities.ObjectTWLUtils;
 	import com.zillians.ProtocolID;
 	import com.zillians.event.ZilliansEvent;

@@ -5,7 +5,7 @@
 package com.zillians.service
 {
 	import com.general.logger.Logger;
-	import com.general.proxy.SocketProxy;
+	import com.zillians.proxy.SocketProxy;
 	import com.general.resource.Localizator;
 	import com.zillians.event.ZilliansEvent;
 	

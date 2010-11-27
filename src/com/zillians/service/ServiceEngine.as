@@ -1,13 +1,14 @@
 package com.zillians.service
 {
 	import com.general.logger.Logger;
-	import com.general.proxy.SocketProxy;
+	import com.zillians.proxy.SocketProxy;
 	import com.general.resource.Localizator;
 	import com.general.service.SystemService;
 	import com.zillians.event.ZilliansEvent;
 	import com.zillians.event.ZilliansEventDispatcher;
 	import com.zillians.protocol.messages.ClientCreateServiceTokenResponseMsg;
 	import com.zillians.service.TokenService;
+	import com.zillians.service.GameService;
 	
 	import flash.events.*;
 	
@@ -35,8 +36,16 @@ package com.zillians.service
 		private var mPassword:String;
 		public function init( u:String, p:String ):void
 		{
-			/*TODO: Remove SocketProxyInit - it doesn't make sense */
 			SocketProxy.init(null);
+		
+			/* move to Service Init */
+			SocketProxy.addSocketService(
+				TokenService.getInstance().getServiceName()
+				,new SocketService(TokenService.getInstance().getServiceName()));
+			SocketProxy.addSocketService(
+				GameService.getInstance().getServiceName()
+				,new SocketService(GameService.getInstance().getServiceName()));
+			SocketProxy.setCurrentSocketService(TokenService.getInstance().getServiceName());
 			
 			/* TODO: just using TokenService.login() */
 			SocketProxy.connect(

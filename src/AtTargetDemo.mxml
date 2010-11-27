@@ -3,7 +3,7 @@
 	<mx:Script>
 		<![CDATA[
 			import com.general.logger.Logger;
-			import com.general.proxy.SocketProxy;
+			import com.zillians.proxy.SocketProxy;
 			import com.general.resource.Localizator;
 			import com.general.service.SystemService;
 			import com.zillians.event.ZilliansEventDispatcher;

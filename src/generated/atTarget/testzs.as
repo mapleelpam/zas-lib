@@ -5,7 +5,7 @@ package generated.atTarget
 	
 	import com.zillians.protocol.messages.ClientRemoteProcedureCallMsgSend;
 	import com.zillians.ProtocolID;
-	import com.general.proxy.SocketProxy;
+	import com.zillians.proxy.SocketProxy;
 	
 	public class testzs
 	{

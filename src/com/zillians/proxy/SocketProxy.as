@@ -2,7 +2,7 @@
  * Copyright 
  *
  */
-package com.general.proxy
+package com.zillians.proxy
 {
 	import com.zillians.protocol.ProtocolIDMapper;
 	import com.zillians.event.ZilliansEventDispatcher;
@@ -48,10 +48,6 @@ package com.general.proxy
 			}else{
 				socketPoolMap=new HashMap();
 			}
-			//初始化身份验证socket服务类
-			addSocketService(socketService_name_token,new SocketService(socketService_name_token));
-			addSocketService(socketService_name_game,new SocketService(socketService_name_game));
-			setCurrentSocketService(socketService_name_token);
 		}
 		
 		/**
