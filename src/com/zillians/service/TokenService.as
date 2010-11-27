@@ -4,17 +4,17 @@
  */
 package com.zillians.service
 {
-	import com.general.constants.BaseConstants;
+	import com.zillians.protocol.ProtocolIDMapper;
 	import com.general.logger.Logger;
 	import com.general.proxy.SocketProxy;
 	import com.zillians.common.utilities.ObjectTWLUtils;
 	import com.zillians.Protocols;
 	import com.zillians.event.ZilliansEvent;
 	import com.zillians.event.ZilliansEventDispatcher;
-	import com.zillians.protocol.ClientCreateServiceTokenRequest;
-	import com.zillians.protocol.ClientCreateServiceTokenResponseMsg;
-	import com.zillians.protocol.MsgAuthRequest;
-	import com.zillians.protocol.MsgAuthResponse;
+	import com.zillians.protocol.messages.ClientCreateServiceTokenRequest;
+	import com.zillians.protocol.messages.ClientCreateServiceTokenResponseMsg;
+	import com.zillians.protocol.messages.MsgAuthRequest;
+	import com.zillians.protocol.messages.MsgAuthResponse;
 	
 	/**
 	 * 身份验证服务类
@@ -48,7 +48,7 @@ package com.zillians.service
 		public function login(userName:String, passWord:String ) : void 
 		{
 			var msgAuthRequest:MsgAuthRequest=new MsgAuthRequest(userName,passWord);
-			SocketProxy.sendMessage(Protocols.MsgAuthRequest,msgAuthRequest,SocketProxy.socketService_name_auth);
+			SocketProxy.sendMessage(Protocols.MsgAuthRequest,msgAuthRequest,SocketProxy.socketService_name_token);
 		}
 		
 		private function login_res_handler(e:ZilliansEvent):void{
@@ -77,7 +77,7 @@ package com.zillians.service
 		public function requestToken( serviceID:uint ) : void 
 		{
 			var msg:ClientCreateServiceTokenRequest = new ClientCreateServiceTokenRequest(serviceID,"1","0");
-			SocketProxy.sendMessage(Protocols.ClientCreateServiceTokenRequestMsg,msg,SocketProxy.socketService_name_auth);
+			SocketProxy.sendMessage(Protocols.ClientCreateServiceTokenRequestMsg,msg,SocketProxy.socketService_name_token);
 		}
 		
 		private function token_res_handler(e:ZilliansEvent):void
@@ -85,14 +85,7 @@ package com.zillians.service
 			if(Logger.getInstance().isInfo()){
 				Logger.getInstance().log(e.data.toString(),"Token Request");
 			}
-			trace("tokenReq - response ");
-			
-			var msg:ClientCreateServiceTokenResponseMsg = ClientCreateServiceTokenResponseMsg( e.data );
-			trace( "tokenReq "+msg.ServiceID );
-			trace( "tokenReq "+msg.GatewayAddress );
-			trace( "tokenReq "+msg.Result );
-//			trace( "tokenReq "+msg.ServiceToken );
-			
+			var msg:ClientCreateServiceTokenResponseMsg = ClientCreateServiceTokenResponseMsg( e.data );			
 			if( msg.Result == 14 ) { //TODO: ask is it right 
 				var e:ZilliansEvent = new ZilliansEvent(msg, token_response_ok);
 				ZilliansEventDispatcher.getInstance().dispatchEvent( e );
@@ -103,17 +96,8 @@ package com.zillians.service
 		{
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(Protocols.MsgAuthResponse),login_res_handler);
-			/*TODO -- Move to Somewhere other */
-			BaseConstants.getInstance().setProtocolClassPath(
-				Protocols.MsgAuthResponse
-				,ObjectTWLUtils.getClassPath(MsgAuthResponse));
-			
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(Protocols.ClientCreateServiceTokenResponseMsg),token_res_handler);
-			/*TODO -- Move to Somewhere other */
-			BaseConstants.getInstance().setProtocolClassPath(
-				Protocols.ClientCreateServiceTokenResponseMsg
-				,ObjectTWLUtils.getClassPath(ClientCreateServiceTokenResponseMsg));
 		}
 		
 		private static var instance:TokenService;

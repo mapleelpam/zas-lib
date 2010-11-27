@@ -1,6 +1,6 @@
 package generated.atTarget
 {
-	import com.zillians.protocol.ClientRemoteProcedureCallMsg;
+	import com.zillians.protocol.messages.ClientRemoteProcedureCallMsg;
 	import com.zillians.service.gameservice.IGameFunctionDispatcher;
 	
 	import generated.atTarget.testzs;
@@ -15,25 +15,25 @@ package generated.atTarget
 			switch( msg.FunctionID ){
 				case 0x05:
 				{
-					var id:int = msg.Parameters.readUnsignedInt();
+					var id0x05:int = msg.Parameters.readUnsignedInt();
 					if( testzs.setPlayer != null )
-						testzs.setPlayer(id);
+						testzs.setPlayer(id0x05);
 					else;/*TODO*/
 					return true;
 				}
 				case 0x07:
 				{
-					var id:int = msg.Parameters.readUnsignedInt();
+					var id0x07:int = msg.Parameters.readUnsignedInt();
 					if( testzs.cantHearYou != null )
-						testzs.cantHearYou(id);
+						testzs.cantHearYou(id0x07);
 					else;/*TODO*/
 					return true;
 				}
 				case 0x08:
 				{
-					var id:int = msg.Parameters.readUnsignedInt();
+					var id0x08:int = msg.Parameters.readUnsignedInt();
 					if( testzs.hearHello != null )
-						testzs.hearHello(id);
+						testzs.hearHello(id0x08);
 					else;/*TODO*/
 					return true;
 				}

@@ -1,6 +1,6 @@
 package com.zillians.service
 {
-	import com.general.constants.BaseConstants;
+	import com.zillians.protocol.ProtocolIDMapper;
 	import com.general.logger.Logger;
 	import com.general.proxy.SocketProxy;
 	import com.general.resource.Localizator;
@@ -9,7 +9,7 @@ package com.zillians.service
 	import com.zillians.common.utilities.ObjectTWLUtils;
 	import com.zillians.event.ZilliansEvent;
 	import com.zillians.event.ZilliansEventDispatcher;
-	import com.zillians.protocol.*;
+	import com.zillians.protocol.messages.*;
 	import com.zillians.service.gameservice.IGameFunctionDispatcher;
 	import com.zillians.stub.*;
 	
@@ -28,16 +28,16 @@ package com.zillians.service
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(Protocols.ClientServiceOpenResponseMsg),service_open_res_handler);
 			/*TODO -- Move to Somewhere other */
-			BaseConstants.getInstance().setProtocolClassPath(
-				Protocols.ClientServiceOpenResponseMsg
-				,ObjectTWLUtils.getClassPath(ClientServiceOpenResponseMsg));
-			
+//			ProtocolIDMapper.getInstance().setProtocolClassPath(
+//				Protocols.ClientServiceOpenResponseMsg
+//				,ObjectTWLUtils.getClassPath(ClientServiceOpenResponseMsg));
+//			
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(Protocols.ClientRemoteProcedureCallMsg),rpc_invoker);
 			/*TODO -- Move to Somewhere other */
-			BaseConstants.getInstance().setProtocolClassPath(
-				Protocols.ClientRemoteProcedureCallMsg
-				,ObjectTWLUtils.getClassPath(ClientRemoteProcedureCallMsg));
+//			ProtocolIDMapper.getInstance().setProtocolClassPath(
+//				Protocols.ClientRemoteProcedureCallMsg
+//				,ObjectTWLUtils.getClassPath(ClientRemoteProcedureCallMsg));
 		}
 		public function getServiceID():uint
 		{
@@ -67,7 +67,7 @@ package com.zillians.service
 		{
 			trace("@GameSerice:service_open_res_handler");
 		}
-		private function serviceOpen()
+		private function serviceOpen():void
 		{
 			var msg:ClientServiceOpenRequestMsg = new ClientServiceOpenRequestMsg(getServiceID(),serviceToken);
 			SocketProxy.sendMessage(Protocols.ClientServiceOpenRequestMsg ,msg,SocketProxy.socketService_name_game);
@@ -90,17 +90,5 @@ package com.zillians.service
 			return instance;
 		}
 		
-
-		/* TODO: move to others */
-		public function sayHelloTo( id:uint )
-		{
-			trace(" say hello to id "+id);
-			var data:ByteArray = new ByteArray;
-			data.endian = Endian.LITTLE_ENDIAN;
-			data.writeUnsignedInt( id );
-			
-			var msg:ClientRemoteProcedureCallMsgSend = new ClientRemoteProcedureCallMsgSend( 0x06, data );
-			SocketProxy.sendMessage(Protocols.ClientRemoteProcedureCallMsg, msg, SocketProxy.socketService_name_game);
-		}
 	}
 }

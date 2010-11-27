@@ -1,6 +1,7 @@
-package com.zillians.protocol
+package com.zillians.protocol.messages
 {
 	import flash.utils.ByteArray;
+	import com.zillians.protocol.ProtocolBase;
 
 	public class ClientRemoteProcedureCallMsg extends ProtocolBase
 	{

@@ -4,8 +4,7 @@
  */
 package com.general.proxy
 {
-	
-	import com.general.constants.BaseConstants;
+	import com.zillians.protocol.ProtocolIDMapper;
 	import com.zillians.event.ZilliansEventDispatcher;
 	import com.zillians.event.ZilliansEvent;
 	import com.general.logger.Logger;
@@ -31,7 +30,7 @@ package com.general.proxy
 	public class SocketProxy 
 	{
 		public static const socket_data_receive:String="socket_data_receive";
-		public static const socketService_name_auth:String="Token";
+		public static const socketService_name_token:String="Token";
 		public static const socketService_name_game:String="Game";
 		
 		private static var socketPoolMap:HashMap; 
@@ -50,9 +49,9 @@ package com.general.proxy
 				socketPoolMap=new HashMap();
 			}
 			//初始化身份验证socket服务类
-			addSocketService(socketService_name_auth,new SocketService(socketService_name_auth));
+			addSocketService(socketService_name_token,new SocketService(socketService_name_token));
 			addSocketService(socketService_name_game,new SocketService(socketService_name_game));
-			setCurrentSocketService(socketService_name_auth);
+			setCurrentSocketService(socketService_name_token);
 		}
 		
 		/**
@@ -204,7 +203,7 @@ package com.general.proxy
 			trace(" SocketProxy msgType = "+msgType);
 			var re:ZilliansEvent=new ZilliansEvent(
 				ByteArrayUtils.convertByteArrayToObject(
-					bt,BaseConstants.getInstance().getModelPath(msgType))
+					bt,ProtocolIDMapper.getInstance().getProtocolClassPath(msgType))
 				,String(msgType));
 			ZilliansEventDispatcher.getInstance().dispatchEvent(re);
 		}

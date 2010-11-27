@@ -6,7 +6,7 @@ package com.zillians.service
 	import com.general.service.SystemService;
 	import com.zillians.event.ZilliansEvent;
 	import com.zillians.event.ZilliansEventDispatcher;
-	import com.zillians.protocol.ClientCreateServiceTokenResponseMsg;
+	import com.zillians.protocol.messages.ClientCreateServiceTokenResponseMsg;
 	import com.zillians.service.TokenService;
 	
 	import flash.events.*;
@@ -18,7 +18,7 @@ package com.zillians.service
 		public function ServiceEngine()
 		{
 			ZilliansEventDispatcher.getInstance().addEventListener(
-				SocketProxy.socketService_name_auth+Event.CONNECT,
+				SocketProxy.socketService_name_token+Event.CONNECT,
 				socket_connect_handler);//身份验证服务器连接成功	
 			
 			ZilliansEventDispatcher.getInstance().addEventListener(
@@ -32,13 +32,13 @@ package com.zillians.service
 		
 		private var mUsername:String;
 		private var mPassword:String;
-		public function init( u:String, p:String )
+		public function init( u:String, p:String ):void
 		{
 			SocketProxy.init(null);
 			SocketProxy.connect(
 				SystemService.getInstance().socketserver_ip
 				,SystemService.getInstance().socketserver_port
-				,SocketProxy.socketService_name_auth);
+				,SocketProxy.socketService_name_token);
 			
 			mUsername = u;
 			mPassword = p;

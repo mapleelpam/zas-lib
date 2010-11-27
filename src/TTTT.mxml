@@ -2,7 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="init()">
 	<mx:Script>
 		<![CDATA[
-			import com.zillians.protocol.MsgAuthResponse;
+			import com.zillians.protocol.messages.MsgAuthResponse;
 			import com.zillians.common.utilities.ObjectTWLUtils;
 			private function init():void{
 				trace(ObjectTWLUtils.getClassPath(MsgAuthResponse));

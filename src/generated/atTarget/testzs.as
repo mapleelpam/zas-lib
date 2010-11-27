@@ -1,5 +1,12 @@
 package generated.atTarget
 {
+	import flash.utils.ByteArray;
+	import flash.utils.Endian;
+	
+	import com.zillians.protocol.messages.ClientRemoteProcedureCallMsgSend;
+	import com.zillians.Protocols;
+	import com.general.proxy.SocketProxy;
+	
 	public class testzs
 	{
 		public function testzs()
@@ -15,5 +22,17 @@ package generated.atTarget
 		//hearHello( id:uint ):void
 		public static var hearHello:Function;
 		
+		static public function sayHelloTo( id:uint ):void
+		{
+			trace(" say hello to id "+id);
+			var params:ByteArray = new ByteArray;
+			params.endian = Endian.LITTLE_ENDIAN;
+			
+			params.writeUnsignedInt( id );
+			
+			var msg:ClientRemoteProcedureCallMsgSend = 
+				new ClientRemoteProcedureCallMsgSend( /*FunctionID*/0x06, /*param*/params );
+			SocketProxy.sendMessage(Protocols.ClientRemoteProcedureCallMsg, msg, SocketProxy.socketService_name_game);
+		}
 	}
 }
