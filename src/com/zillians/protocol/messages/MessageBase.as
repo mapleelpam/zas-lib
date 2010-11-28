@@ -1,7 +1,7 @@
-package com.zillians.protocol
+package com.zillians.protocol.messages
 {
 	
-	public class ProtocolBase
+	public class MessageBase
 	{
 		public static const field_type_string:String="field_type_string";
 		public static const field_type_string_encode:String="writeMultiByte";
@@ -42,7 +42,7 @@ package com.zillians.protocol
 			fieldSequence_value.push({n:fName,t:field_type_param});
 		}
 		
-		public function ProtocolBase()
+		public function MessageBase()
 		{
 			fieldSequence_value=new Array();
 		}

@@ -15,32 +15,36 @@
 					
 			private var svcEngine:ServiceEngine; 
 			private function init():void{
-				SystemService.getInstance().addEventListener(SystemService.t_sys_config_loaded,afterSysConfigLoadSuccess);
-				SystemService.getInstance().initSystem();
+				SystemService.getInstance().addEventListener(
+					SystemService.t_sys_config_loaded
+					,afterSysConfigLoadSuccess);
+				SystemService.getInstance().initSystem("config/AtTargetServiceConfig.xml");
 				
-				svcEngine = new ServiceEngine();
-				currentState = "LoginState";
+				ZilliansEventDispatcher.getInstance().addEventListener(
+					TokenService.event_auth_response_ok,
+					afterAuthOK);//身份验证服务器認證成功
 			}
 			
 			private function afterSysConfigLoadSuccess(e:Event):void{
 				if(Logger.getInstance().isInfo()){
-					Logger.getInstance().log(Localizator.getInstance().getText("system.init.success"),"AMF1Test");
+					Logger.getInstance().log(Localizator.getInstance().getText("system.init.success"),"AtTargetDemo");
 				}
+				SocketProxy.init(null);
+				svcEngine = new ServiceEngine();
+				currentState = "LoginState";
 			}
 			
 			private function loginButtonPress(e:MouseEvent):void{
-				trace("login press");
-				svcEngine.init( passInput.text, userInput.text );
-				
-				ZilliansEventDispatcher.getInstance().addEventListener(
-					TokenService.auth_response_ok,
-					afterAuthOK);//身份验证服务器認證成功
+				svcEngine.login( passInput.text, userInput.text );
 			}
+			
 			private function afterAuthOK(event:Event):void
 			{
-				trace(" @global AuthOK");
-				currentState = "HelloState";
+				if(Logger.getInstance().isInfo()){
+					Logger.getInstance().log(Localizator.getInstance().getText("token.auth.ok"),"AtTargetDemo");
+				}
 				
+				currentState = "HelloState";
 				// Attach Stub (Generate by compiler) and Service
 				svcEngine.gameService.gameFunctionDispatcher = new AtClientFunctionDispatcher(); 
 				
@@ -62,22 +66,25 @@
 	<mx:states>
 		<mx:State name="HelloState">
 			<mx:AddChild position="lastChild">
-				<mx:TextArea x="55" y="27" width="371" height="310" id="atext"/>
+				<mx:TextArea x="158" y="35" width="435" height="331" id="atext"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="509" y="37" label="SayHeloTo 1" click="testzs.sayHelloTo(1)"/>
+				<mx:Button x="612" y="39" label="SayHeloTo 1" click="testzs.sayHelloTo(1)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="509" y="72" label="SayHeloTo 2" click="testzs.sayHelloTo(2)"/>
+				<mx:Button x="612" y="74" label="SayHeloTo 2" click="testzs.sayHelloTo(2)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="509" y="104" label="SayHeloTo 3" click="testzs.sayHelloTo(3)"/>
+				<mx:Button x="612" y="106" label="SayHeloTo 3" click="testzs.sayHelloTo(3)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="509" y="139" label="SayHeloTo 4" click="testzs.sayHelloTo(4)"/>
+				<mx:Button x="612" y="141" label="SayHeloTo 4" click="testzs.sayHelloTo(4)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="509" y="174" label="SayHeloTo 5" click="testzs.sayHelloTo(5)"/>
+				<mx:Button x="612" y="176" label="SayHeloTo 5" click="testzs.sayHelloTo(5)"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{atext}" position="before">
+				<mx:Text x="160" y="10" text="Information From Cloud&#xd;"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State name="LoginState">
@@ -98,4 +105,6 @@
 			</mx:AddChild>
 		</mx:State>
 	</mx:states>
+	<mx:TextArea x="10" y="35" height="331" width="145"/>
+	<mx:Text x="19" y="10" text="Debug Information&#xd;" id="debug"/>
 </mx:Application>

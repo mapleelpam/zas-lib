@@ -1,0 +1,14 @@
+<config>
+	<socketserver>
+		<ip>zillians-sh.dyndns.org</ip>
+		<port>5000</port>
+	</socketserver>
+	
+	<logger level="4"/>
+	
+	<language defaultlan="zh_CN" currentlan="zh_CN">
+		<lan id="zh_CN" path="config/zh_CN.txt"/>
+	</language>
+
+	
+</config>

@@ -11,7 +11,6 @@ package com.zillians.service
 	import com.zillians.protocol.ProtocolIDMapper;
 	import com.zillians.protocol.messages.*;
 	import com.zillians.service.gameservice.IGameFunctionDispatcher;
-	import com.zillians.stub.*;
 	import com.zillians.proxy.SocketProxy;
 	
 	import flash.events.Event;
@@ -20,13 +19,13 @@ package com.zillians.service
 	
 	public class GameService
 	{
-		private var mName:String = "GameService";
+		private var serviceName:String = "GameService";
 		public function GameService( name:String = "GameService" )
 		{
-			mName = name;
+			serviceName = name;
 			
 			ZilliansEventDispatcher.getInstance().addEventListener(
-				mName+Event.CONNECT,
+				serviceName+Event.CONNECT,
 				socket_connect_handler);//GameServiceConnect
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(ProtocolID.CLIENT_SERVICE_OPEN_RESPONSE_MSG),
@@ -36,8 +35,8 @@ package com.zillians.service
 				at_client_rpc_handler);
 			
 			SocketProxy.bind(
-				mName
-				,new SocketService(mName));
+				serviceName
+				,new SocketService(serviceName));
 		}
 		public function getServiceID():uint
 		{
@@ -75,14 +74,14 @@ package com.zillians.service
 		private function serviceOpen():void
 		{
 			var msg:ClientServiceOpenRequestMsg = new ClientServiceOpenRequestMsg(getServiceID(),serviceToken);
-			SocketProxy.sendMessage(ProtocolID.CLIENT_SERVICE_OPEN_REQUEST_MSG ,msg,mName);
+			SocketProxy.sendMessage(ProtocolID.CLIENT_SERVICE_OPEN_REQUEST_MSG ,msg,serviceName);
 		}
 		
 		private var serviceToken:UUID;
 		public function open( address:String, port:Number, token:UUID ):void
 		{
 			serviceToken = token;	
-			SocketProxy.connect( address, port, mName );
+			SocketProxy.connect( address, port, serviceName );
 		}
 	}
 }

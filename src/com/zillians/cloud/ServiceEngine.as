@@ -22,21 +22,20 @@ package com.zillians.cloud
 		public function ServiceEngine()
 		{	
 			ZilliansEventDispatcher.getInstance().addEventListener(
-				TokenService.auth_response_ok,
+				TokenService.event_auth_response_ok,
 				afterTokenServiceAuthOK);//身份验证服务器認證成功
 			
 			ZilliansEventDispatcher.getInstance().addEventListener(
-				TokenService.token_response_ok,
-				afterTokenServiceTokenRequestOK);//TokenRequest成功 
-		}
-		
-		public function init( username:String, password:String ):void
-		{
-			SocketProxy.init(null);
-		
+				TokenService.event_token_response_ok,
+				afterTokenServiceTokenRequestOK);//TokenRequest成功
+			
 			tokenService = new TokenService();
 			gameService = new GameService();
 			
+		}
+		
+		public function login( username:String, password:String ):void
+		{
 			tokenService.open(
 				SystemService.getInstance().socketserver_ip
 				,SystemService.getInstance().socketserver_port

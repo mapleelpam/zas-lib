@@ -26,6 +26,7 @@ package com.general.service
 	{
 		
 		public static const t_sys_config_loaded:String="t_sys_config_loaded";
+		public static const t_sys_config_error:String="t_sys_config_error";
 		
 		public var socketserver_ip:String="";
 		public var socketserver_port:uint;
@@ -78,6 +79,12 @@ package com.general.service
 			initLogger(loggerLevel);
 			loadLanguage();
 			
+		}
+		private function config_load_error(e:Event):void{
+			if(Logger.getInstance().isInfo()){
+				Logger.getInstance().log(Localizator.getInstance().getText("system.init.fail"),"SystemService");
+			}
+			this.dispatchEvent(new Event(t_sys_config_error));
 		}
 		 
 		/**
@@ -140,6 +147,7 @@ package com.general.service
 		public function SystemService(target:IEventDispatcher=null)
 		{
 			StaticDataProxy.getInstance().addEventListener("mainconfig"+StaticDataProxy.t_sys_load_queue_complete,config_load_success);
+			StaticDataProxy.getInstance().addEventListener("mainconfig"+StaticDataProxy.t_sys_load_item_error,config_load_error);
 			StaticDataProxy.getInstance().addEventListener("languages"+StaticDataProxy.t_sys_load_queue_complete,languages_load_success);
 		}
 		

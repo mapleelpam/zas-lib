@@ -26,8 +26,8 @@ package com.zillians.service
 	 */
 	public class TokenService
 	{
-		public static const auth_response_ok:String = "auth_response_ok"; 
-		public static const token_response_ok:String = "token_response_ok";
+		public static const event_auth_response_ok:String = "auth_response_ok"; 
+		public static const event_token_response_ok:String = "token_response_ok";
 		
 		/* AUTH RESULT ENUM (BEGIN) */
 		public static const AUTH_OK:uint					= 0x00;
@@ -63,7 +63,7 @@ package com.zillians.service
 			switch( msg.result ) {
 				case AUTH_OK:  {
 					trace(" auth ok ");
-					var e:ZilliansEvent = new ZilliansEvent({result:AUTH_OK}, auth_response_ok);
+					var e:ZilliansEvent = new ZilliansEvent({result:AUTH_OK}, event_auth_response_ok);
 					ZilliansEventDispatcher.getInstance().dispatchEvent( e );
 					break;
 				}					
@@ -89,7 +89,7 @@ package com.zillians.service
 			}
 			var msg:ClientCreateServiceTokenResponseMsg = ClientCreateServiceTokenResponseMsg( e.data );			
 			if( msg.Result == 14 ) { //TODO: ask is it right 
-				var e:ZilliansEvent = new ZilliansEvent(msg, token_response_ok);
+				var e:ZilliansEvent = new ZilliansEvent(msg, event_token_response_ok);
 				ZilliansEventDispatcher.getInstance().dispatchEvent( e );
 			}
 		}
@@ -103,13 +103,13 @@ package com.zillians.service
 			login(mUsername, mPassword);
 		}
 		
-		private var mName:String = "TokenService";
+		private var serviceName:String = "TokenService";
 		public function TokenService( name:String = "TokenService" )
 		{
-			mName = name;
+			serviceName = name;
 			
 			ZilliansEventDispatcher.getInstance().addEventListener(
-				mName+Event.CONNECT,
+				serviceName+Event.CONNECT,
 				socket_connect_handler);//身份验证服务器连接成功
 			ZilliansEventDispatcher.getInstance().addEventListener(
 				String(ProtocolID.AUTH_RESPONSE_MSG),login_res_handler);
@@ -117,18 +117,18 @@ package com.zillians.service
 				String(ProtocolID.CLIENT_CREATE_TOKEN_RESPONSE_MSG),token_res_handler);
 			
 			SocketProxy.bind(
-				mName, new SocketService(mName));
+				serviceName, new SocketService(serviceName));
 		}
 		
 		public function getServiceName():String
 		{
-			return mName;
+			return serviceName;
 		}
 		private var mUsername:String;
 		private var mPassword:String;
 		public function open( address:String, port:Number, username:String, password:String ):void
 		{
-			SocketProxy.connect( address, port, mName );
+			SocketProxy.connect( address, port, serviceName );
 			mUsername = username;
 			mPassword = password;
 		}

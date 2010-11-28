@@ -157,7 +157,9 @@ package com.zillians.service
 	     */		
 	    private function socket_securityError_handler(e:SecurityErrorEvent):void 
 	    {
-	    	this.dispatchEvent(new ZilliansEvent({serviceName:this.serviceName},SecurityErrorEvent.SECURITY_ERROR));
+	    	this.dispatchEvent(
+				new ZilliansEvent({serviceName:this.serviceName}
+					,SecurityErrorEvent.SECURITY_ERROR));
 	    }
 	
 	    /**

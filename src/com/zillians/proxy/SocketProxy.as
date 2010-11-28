@@ -113,12 +113,9 @@ package com.zillians.proxy
 		 * @param serviceName
 		 * 
 		 */		
-		public static function connect(socket_url:String,socket_port:Number,serviceName:String):void{
-//			if(StringTWLUtil.isEmpty(serviceName)){
-//				currentSocketService.connSocket(socket_url,socket_port);
-//			}else{
-				socketPoolMap.find(serviceName).connSocket(socket_url,socket_port);
-//			}
+		public static function connect(socket_url:String,socket_port:Number,serviceName:String):void
+		{
+			socketPoolMap.find(serviceName).connSocket(socket_url,socket_port);
 		}
 		
 		/**
@@ -141,13 +138,10 @@ package com.zillians.proxy
 			bt.writeInt( payload.length );
 			bt.writeBytes( payload, 0 , payload.length );
 			//发送
-//			if(StringTWLUtil.isEmpty(serviceName)){
-//				currentSocketService.sendToServer(bt);
-//			}else{
-				if(socketPoolMap.containsKey(serviceName)){
-					socketPoolMap.find(serviceName).sendToServer(bt);
-				}
-//			}
+			if(socketPoolMap.containsKey(serviceName)){
+				socketPoolMap.find(serviceName).sendToServer(bt);
+			}
+
 		}
 		
 		//*****************************私有方法**************************************
