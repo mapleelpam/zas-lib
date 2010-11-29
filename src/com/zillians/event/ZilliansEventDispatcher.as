@@ -14,18 +14,21 @@ package com.zillians.event
 	 */
 	public class ZilliansEventDispatcher extends EventDispatcher
 	{
+		//Public Events
+		public static const event_cloud_response_auth_ok:String = "cloud_response_auth_ok";
+	
+		
 		public function ZilliansEventDispatcher(target:IEventDispatcher=null)
 		{
 			super(target);
 		}
 		
-		private static var instance:ZilliansEventDispatcher;
-		
-		public static function getInstance():ZilliansEventDispatcher{
-			if(instance==null){
-				instance=new ZilliansEventDispatcher();
+		private static var mInstance:ZilliansEventDispatcher;
+		public static function instance():ZilliansEventDispatcher{
+			if(mInstance==null){
+				mInstance=new ZilliansEventDispatcher();
 			}
-			return instance;
+			return mInstance;
 		}
 		
 	}

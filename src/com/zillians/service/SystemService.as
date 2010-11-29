@@ -2,13 +2,13 @@
  * Copyright 
  *
  */
-package com.general.service
+package com.zillians.service
 {
 	
 	import com.general.cache.DataCache;
-	import com.general.logger.Logger;
-	import com.general.proxy.StaticDataProxy;
-	import com.general.resource.Localizator;
+	import com.zillians.logger.Logger;
+	import com.zillians.proxy.StaticDataProxy;
+	import com.zillians.resource.Localizator;
 	
 	import de.polygonal.ds.HashMap;
 	
@@ -30,6 +30,7 @@ package com.general.service
 		
 		public var socketserver_ip:String="";
 		public var socketserver_port:uint;
+		public var game_name:String;
 		public var loggerLevel:int;
 		public var languagePath:XML;
 		public var defaultLanguage:String;
@@ -45,45 +46,43 @@ package com.general.service
 		 */		
 		public function initSystem(configPath:String="config/config.xml"):void{
 			var tmpXmlStr:String="<load id=\"mainconfig\"><i id=\"config\" path=\""+configPath+"\"/></load>";
-			DataCache.getInstance().clearCacheData();			
-			StaticDataProxy.getInstance().loadStaticData(new XML(tmpXmlStr));
+			DataCache.instance().clearCacheData();			
+			StaticDataProxy.instance().loadStaticData(new XML(tmpXmlStr));
 		}
 		
 		/**
 		 * 重置socket服务器地址与端口 
 		 * @param addr
 		 * @param port
-		 * 
+		 * Developer could using this function to hardcode the server address and ports 
 		 */		
 		public function resetSocketAddr(addr:String,port:uint):void{
 			this.socketserver_ip=addr;
 			this.socketserver_port=port;
 		}
 		
-		//***************************************事件监听**************************************
+		//***************************************Event Handlers**************************************
 		/**
 		 * 加载配置文件的回调
 		 * @param e
 		 * 
 		 */		
 		private function config_load_success(e:Event):void{
-			config=XML(DataCache.getInstance().getCacheData("config"));
+			config=XML(DataCache.instance().getCacheData("config"));
 			
 			this.socketserver_ip=config.socketserver[0].ip[0];
 			this.socketserver_port=config.socketserver[0].port[0];
+			this.game_name=config.zillians[0].gamename[0];
 			this.loggerLevel=int(config.logger[0].@level);
 			this.languagePath=config.language[0];
 			this.defaultLanguage=config.language[0].@defaultlan+"";
 			this.currentLanguage=config.language[0].@currentlan+"";
 			//初始化logger
 			initLogger(loggerLevel);
-			loadLanguage();
 			
+			loadLanguage();
 		}
 		private function config_load_error(e:Event):void{
-			if(Logger.getInstance().isInfo()){
-				Logger.getInstance().log(Localizator.getInstance().getText("system.init.fail"),"SystemService");
-			}
 			this.dispatchEvent(new Event(t_sys_config_error));
 		}
 		 
@@ -95,7 +94,7 @@ package com.general.service
 		private function languages_load_success(e:Event):void{
 			var lanMap:HashMap=new HashMap();
 			for each(var x:XML in this.languagePath.lan){
-				lanMap.insert(x.@id+"",DataCache.getInstance().getCacheData(x.@id+"")+"");
+				lanMap.insert(x.@id+"",DataCache.instance().getCacheData(x.@id+"")+"");
 	    	}
 	    	initLanguage(lanMap);
 		}
@@ -121,7 +120,7 @@ package com.general.service
 	    		tmpXmlStr+="<i id=\""+x.@id+"\" path=\""+x.@path+"\"/>";	
 	    	}
 	    	tmpXmlStr+="</load>";
-	    	StaticDataProxy.getInstance().loadStaticData(new XML(tmpXmlStr));
+	    	StaticDataProxy.instance().loadStaticData(new XML(tmpXmlStr));
 	    }
 	    
 	    /**
@@ -131,12 +130,13 @@ package com.general.service
 	     */		
 	    private function initLanguage(lanMap:HashMap):void{
 	    	Localizator.getInstance().initData(lanMap,this.defaultLanguage,this.currentLanguage);
+			
+			// The last thing we need to do~~
 	    	this.dispatchEvent(new Event(t_sys_config_loaded));
 	    }
 		
-		//***************************************单例*******************************************
+		//***singlton
 		private static var instance:SystemService;
-		
 		public static function getInstance():SystemService{
 			if(instance==null){
 				instance=new SystemService();
@@ -144,11 +144,16 @@ package com.general.service
 			return instance;
 		}
 		
-		public function SystemService(target:IEventDispatcher=null)
+		//***Constructor
+		public function SystemService()
 		{
-			StaticDataProxy.getInstance().addEventListener("mainconfig"+StaticDataProxy.t_sys_load_queue_complete,config_load_success);
-			StaticDataProxy.getInstance().addEventListener("mainconfig"+StaticDataProxy.t_sys_load_item_error,config_load_error);
-			StaticDataProxy.getInstance().addEventListener("languages"+StaticDataProxy.t_sys_load_queue_complete,languages_load_success);
+			StaticDataProxy.instance().addEventListener("mainconfig"+StaticDataProxy.t_sys_load_queue_complete,config_load_success);
+			StaticDataProxy.instance().addEventListener("mainconfig"+StaticDataProxy.t_sys_load_item_error,config_load_error);
+//			StaticDataProxy.getInstance().addEventListener("mainconfig"+StaticDataProxy.t_sys_load_item_http_error,config_load_error);
+			
+			StaticDataProxy.instance().addEventListener("languages"+StaticDataProxy.t_sys_load_queue_complete,languages_load_success);
+			StaticDataProxy.instance().addEventListener("languages"+StaticDataProxy.t_sys_load_item_error,config_load_error);
+//			StaticDataProxy.getInstance().addEventListener("languages"+StaticDataProxy.t_sys_load_item_http_error,config_load_error);
 		}
 		
 	}

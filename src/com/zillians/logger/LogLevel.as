@@ -2,7 +2,7 @@
  * Copyright 
  *
  */
-package com.general.logger
+package com.zillians.logger
 {
 	/**
 	 * 日志等级

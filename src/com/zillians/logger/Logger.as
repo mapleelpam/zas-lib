@@ -2,8 +2,9 @@
  * Copyright 
  *
  */
-package com.general.logger
+package com.zillians.logger
 {
+	import com.zillians.service.SystemService;
 	/**
 	 * 日志服务
 	 * @author twl
@@ -70,7 +71,9 @@ package com.general.logger
 		 * @param logName
 		 * 
 		 */		
-		public function log(msg:String,logName:String="system"):void{
+		public function log(msg:String,logName:String=null):void{
+			if( logName == null )
+				logName = SystemService.getInstance().game_name;
 			trace("Log====>["+logName+"] "+msg);
 		}
 		

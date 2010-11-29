@@ -4,8 +4,8 @@
  */
 package com.zillians.service
 {
-	import com.general.logger.Logger;
-	import com.general.resource.Localizator;
+	import com.zillians.logger.Logger;
+	import com.zillians.resource.Localizator;
 	import com.zillians.protocol.ProtocolID;
 	import com.zillians.common.utilities.ObjectTWLUtils;
 	import com.zillians.event.ZilliansEvent;
@@ -26,7 +26,7 @@ package com.zillians.service
 	 */
 	public class TokenService
 	{
-		public static const event_auth_response_ok:String = "auth_response_ok"; 
+//		public static const event_auth_response_ok:String = "auth_response_ok"; 
 		public static const event_token_response_ok:String = "token_response_ok";
 		
 		/* AUTH RESULT ENUM (BEGIN) */
@@ -56,15 +56,16 @@ package com.zillians.service
 		
 		private function login_res_handler(e:ZilliansEvent):void{
 			if(Logger.getInstance().isInfo()){
-				Logger.getInstance().log(e.data.toString(),"AMF1Test");
+				Logger.getInstance().log( e.data.toString() );
 			}
 			
 			var msg:MsgAuthResponse = MsgAuthResponse( e.data );
 			switch( msg.result ) {
 				case AUTH_OK:  {
 					trace(" auth ok ");
-					var e:ZilliansEvent = new ZilliansEvent({result:AUTH_OK}, event_auth_response_ok);
-					ZilliansEventDispatcher.getInstance().dispatchEvent( e );
+					var e:ZilliansEvent = new ZilliansEvent({result:AUTH_OK}
+						,ZilliansEventDispatcher.event_cloud_response_auth_ok);
+					ZilliansEventDispatcher.instance().dispatchEvent( e );
 					break;
 				}					
 				case AUTH_MSG_FORMAT_ERROR:
@@ -90,7 +91,7 @@ package com.zillians.service
 			var msg:ClientCreateServiceTokenResponseMsg = ClientCreateServiceTokenResponseMsg( e.data );			
 			if( msg.Result == 14 ) { //TODO: ask is it right 
 				var e:ZilliansEvent = new ZilliansEvent(msg, event_token_response_ok);
-				ZilliansEventDispatcher.getInstance().dispatchEvent( e );
+				ZilliansEventDispatcher.instance().dispatchEvent( e );
 			}
 		}
 		//连接成功
@@ -108,12 +109,12 @@ package com.zillians.service
 		{
 			serviceName = name;
 			
-			ZilliansEventDispatcher.getInstance().addEventListener(
+			ZilliansEventDispatcher.instance().addEventListener(
 				serviceName+Event.CONNECT,
 				socket_connect_handler);//身份验证服务器连接成功
-			ZilliansEventDispatcher.getInstance().addEventListener(
+			ZilliansEventDispatcher.instance().addEventListener(
 				String(ProtocolID.AUTH_RESPONSE_MSG),login_res_handler);
-			ZilliansEventDispatcher.getInstance().addEventListener(
+			ZilliansEventDispatcher.instance().addEventListener(
 				String(ProtocolID.CLIENT_CREATE_TOKEN_RESPONSE_MSG),token_res_handler);
 			
 			SocketProxy.bind(

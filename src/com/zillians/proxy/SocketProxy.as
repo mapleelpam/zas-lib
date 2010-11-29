@@ -7,9 +7,9 @@ package com.zillians.proxy
 	import com.zillians.protocol.ProtocolIDMapper;
 	import com.zillians.event.ZilliansEventDispatcher;
 	import com.zillians.event.ZilliansEvent;
-	import com.general.logger.Logger;
+	import com.zillians.logger.Logger;
 	import com.zillians.protocol.messages.MessageBase;
-	import com.general.resource.Localizator;
+	import com.zillians.resource.Localizator;
 	import com.zillians.service.SocketService;
 	import com.zillians.common.utilities.ByteArrayUtils;
 	import com.zillians.common.utilities.StringTWLUtil;
@@ -82,6 +82,7 @@ package com.zillians.proxy
         			if(Logger.getInstance().isInfo()){
 						Logger.getInstance().log(e.data.serviceName+"-->"+Localizator.getInstance().getText("socket.securityError"),"AMF1Test");
 					}
+					doAfterSecError(e.data.serviceName+"");
         		});//连接安全域问题
         	socket.addEventListener(socket_data_receive, 
 				function (e:ZilliansEvent):void{
@@ -91,20 +92,6 @@ package com.zillians.proxy
         			doAfterReceiveData(e.data.t,e.data.d);
         		});//从服务器端接收到数据
 		}
-		
-		/**
-		 * 设置当前默认的socketservice 
-		 * @param serviceName
-		 * @return 
-		 * 
-		 */		
-//		public static function setCurrentSocketService(serviceName:String):Boolean{
-//			if(!socketPoolMap.containsKey(serviceName)){
-//				return false;
-//			}
-//			currentSocketService=socketPoolMap.find(serviceName);
-//			return true;
-//		}
 		
 		/**
 		 * 连接server 
@@ -160,7 +147,7 @@ package com.zillians.proxy
 		 * 
 		 */		
 		private static function doAfterConnected(serviceName:String):void{
-			ZilliansEventDispatcher.getInstance().dispatchEvent(new Event(serviceName+Event.CONNECT));
+			ZilliansEventDispatcher.instance().dispatchEvent(new Event(serviceName+Event.CONNECT));
 		}
 		
 		/**
@@ -169,7 +156,12 @@ package com.zillians.proxy
 		 * 
 		 */		
 		private static function doAfterIoError(serviceName:String):void{
-			
+			ZilliansEventDispatcher.instance().dispatchEvent(
+				new ZilliansEvent(null,serviceName+IOErrorEvent.IO_ERROR));
+		}
+		private static function doAfterSecError(serviceName:String):void{
+			ZilliansEventDispatcher.instance().dispatchEvent(
+				new ZilliansEvent(null,serviceName+SecurityErrorEvent.SECURITY_ERROR));
 		}
 		
 		/**
@@ -193,7 +185,7 @@ package com.zillians.proxy
 				ByteArrayUtils.convertByteArrayToObject(
 					bt,ProtocolIDMapper.getInstance().getProtocolClassPath(msgType))
 				,String(msgType));
-			ZilliansEventDispatcher.getInstance().dispatchEvent(re);
+			ZilliansEventDispatcher.instance().dispatchEvent(re);
 		}
 		
 	}

@@ -2,7 +2,7 @@
  * Copyright 
  *
  */
-package com.general.proxy
+package com.zillians.proxy
 {
 	
 	import com.general.cache.DataCache;
@@ -39,13 +39,8 @@ package com.general.proxy
 		private var current_load_task_name:String="";
 		
 		private var addedDefinitions : LoaderContext;
-	
-		/**
-		 * 构造函数 
-		 * @param target
-		 * 
-		 */			
-		public function StaticDataProxy(target:IEventDispatcher=null)
+
+		public function StaticDataProxy()
 		{
 			addedDefinitions = new LoaderContext();
 			addedDefinitions.applicationDomain = ApplicationDomain.currentDomain;
@@ -141,7 +136,7 @@ package com.general.proxy
 		 */		
 		private function onItemComplete(e:QueueLoaderEvent) : void {
 			trace("\t>> " + e.type, "item title: " + e.title);
-			DataCache.getInstance().setCacheData(e.title,e.content);
+			DataCache.instance().setCacheData(e.title,e.content);
 			this.dispatchEvent(new ZilliansEvent({t:e.title},current_load_task_name+t_sys_load_item_complete));
 		}
 	
@@ -179,13 +174,13 @@ package com.general.proxy
 		}
 		
 		//*********************************************单例*******************************************
-		private static var instance:StaticDataProxy;
+		private static var _instance:StaticDataProxy;
 		
-		public static function getInstance():StaticDataProxy{
-			if(instance==null){
-				instance=new StaticDataProxy();
+		public static function instance():StaticDataProxy{
+			if(_instance==null){
+				_instance=new StaticDataProxy();
 			}
-			return instance;
+			return _instance;
 		}
 		
 	}

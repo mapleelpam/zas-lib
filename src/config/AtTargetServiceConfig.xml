@@ -1,8 +1,12 @@
 <config>
 	<socketserver>
-		<ip>zillians-sh.dyndns.org</ip>
+		<ip>210.22.174.58</ip>
 		<port>5000</port>
 	</socketserver>
+	
+	<zillians>
+		<gamename>AtTargetDemo</gamename>
+	</zillians>
 	
 	<logger level="4"/>
 	

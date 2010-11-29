@@ -69,13 +69,13 @@ package com.general.cache
 		}
 		
 		//***************************************单例********************************
-		private static var instance:DataCache;
+		private static var _instance:DataCache;
 		
-		public static function getInstance():DataCache{
-			if(instance==null){
-				instance=new DataCache();
+		public static function instance():DataCache{
+			if(_instance==null){
+				_instance=new DataCache();
 			}
-			return instance;
+			return _instance;
 		}
 		
 		public function DataCache()

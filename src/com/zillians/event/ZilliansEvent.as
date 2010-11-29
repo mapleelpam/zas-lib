@@ -21,9 +21,9 @@ package com.zillians.event
 			this.data_value=data_value;
 		}
 		
-		public function get data():Object{
+		public function get data():Object
+		{
 			return data_value;
 		}
-		
 	}
 }

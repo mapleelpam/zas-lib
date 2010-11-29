@@ -2,7 +2,7 @@
  * Copyright 
  *
  */
-package com.general.resource
+package com.zillians.resource
 {
 	
 	import com.zillians.common.utilities.StringTWLUtil;

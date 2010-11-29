@@ -4,9 +4,9 @@
  */
 package com.zillians.service
 {
-	import com.general.logger.Logger;
+	import com.zillians.logger.Logger;
 	import com.zillians.proxy.SocketProxy;
-	import com.general.resource.Localizator;
+	import com.zillians.resource.Localizator;
 	import com.zillians.event.ZilliansEvent;
 	
 	import flash.events.Event;

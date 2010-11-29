@@ -1,8 +1,8 @@
 package com.zillians.cloud
 {
-	import com.general.logger.Logger;
-	import com.general.resource.Localizator;
-	import com.general.service.SystemService;
+	import com.zillians.logger.Logger;
+	import com.zillians.resource.Localizator;
+	import com.zillians.service.SystemService;
 	import com.zillians.event.ZilliansEvent;
 	import com.zillians.event.ZilliansEventDispatcher;
 	import com.zillians.protocol.messages.ClientCreateServiceTokenResponseMsg;
@@ -16,16 +16,16 @@ package com.zillians.cloud
 	
 	public class ServiceEngine extends EventDispatcher
 	{
-		private var tokenService:TokenService;
+		public var tokenService:TokenService;
 		public var gameService:GameService;
 		
 		public function ServiceEngine()
 		{	
-			ZilliansEventDispatcher.getInstance().addEventListener(
-				TokenService.event_auth_response_ok,
+			ZilliansEventDispatcher.instance().addEventListener(
+				ZilliansEventDispatcher.event_cloud_response_auth_ok,
 				afterTokenServiceAuthOK);//身份验证服务器認證成功
 			
-			ZilliansEventDispatcher.getInstance().addEventListener(
+			ZilliansEventDispatcher.instance().addEventListener(
 				TokenService.event_token_response_ok,
 				afterTokenServiceTokenRequestOK);//TokenRequest成功
 			
@@ -34,7 +34,7 @@ package com.zillians.cloud
 			
 		}
 		
-		public function login( username:String, password:String ):void
+		public function cloudLogin( username:String, password:String ):void
 		{
 			tokenService.open(
 				SystemService.getInstance().socketserver_ip
