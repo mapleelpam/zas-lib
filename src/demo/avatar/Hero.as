@@ -24,15 +24,14 @@ package demo.avatar
 		
 		//英雄属性================================
 		private	var id:uint;
-		private	var avatar_id:uint = 0;
-		
-		
+		private	var avatar_id:uint = 0;	
 		
 		//英雄状态================================
 		public	var dir:uint = Direction.DOWN;
 		
 		/** 英雄移动状态标志 */
 		public var moveable:Boolean = false;
+		public var network_dirty:Boolean = true;
 		
 		
 		/** 当前要显示的帧序列数，移动时从 frameArr 取得 */
@@ -135,7 +134,7 @@ package demo.avatar
 					break;
 				default:break;
 			}
-			
+			network_dirty = true;
 		}
 		
 		private function doChangeFrame():Boolean {

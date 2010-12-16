@@ -72,15 +72,17 @@ package demo.avatar
 		
 		public function remoteLogin ( id:uint ):void {
 			addNetworkPlayer ( id );
+			currentPlayer.network_dirty = true;
 		}
 		
 		public function remoteLogout ( id:uint ):void {
 			deleteNetworkPlayer ( id );
 		}
 		
-		public function remoteTryMove ( id:uint, x:uint, y:uint ):void {
+		public function remoteTryMove ( id:uint, x:uint, y:uint ):void {		
 			var h:Hero = networkPlayers[id];
-			h.moveToXY(x, y);
+			if( h )
+				h.moveToXY(x, y);
 		}
 		
 		public function remoteChangeDirection ( id:uint, dir:uint ):void {
@@ -110,7 +112,7 @@ package demo.avatar
 				FlexGlobals.topLevelApplication.height,false);
 
 			
-			netEventTimer = new Timer(20);
+			netEventTimer = new Timer(23);
 			netEventTimer.addEventListener(TimerEvent.TIMER, onNetEventTimer);
 			
 			
@@ -148,29 +150,21 @@ package demo.avatar
 
 		}
 		
-		
-		
-		
 		//私有方法=======================================
 		
 		private function logicLoop ():void {
 			currentPlayer.doLoop();
-
 		}
+		
 		private function onNetEventTimer( e:Event ):void {
-			LocalPlayer.tryMove(currentPlayer.x, currentPlayer.y);
+			if( currentPlayer.moveable || currentPlayer.network_dirty ) {
+				currentPlayer.network_dirty = false;
+				LocalPlayer.tryMove(currentPlayer.x, currentPlayer.y);
+			}
 		}
-		
-		
-		
-		
 		
 		protected function drawObjects():void {
-			backBuffer.fillRect(backBuffer.rect,clearColor);
-			
-			
-			
-			
+			backBuffer.fillRect(backBuffer.rect,clearColor);			
 			backBuffer.draw(textBar,textBarMa);
 			
 			for each ( var h:Hero in networkPlayers ) {
@@ -221,9 +215,8 @@ package demo.avatar
 			}
 		}
 		
-		public function onKeyUp ( e:KeyboardEvent ):void {
-			
-			
+		public function onKeyUp ( e:KeyboardEvent ):void 
+		{
 			if ( e.keyCode == Keyboard.UP
 				&& currentPlayer.dir == Direction.UP ) {
 				currentPlayer.moveStop();

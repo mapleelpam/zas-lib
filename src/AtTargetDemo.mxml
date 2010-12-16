@@ -23,7 +23,7 @@
 					SystemService.t_sys_config_error
 					,system_load_error);
 				
-				SystemService.getInstance().initSystem("config/AtTargetServiceConfig.xml");
+				SystemService.getInstance().initSystem("config/config_attarget.xml");
 				
 				ZilliansEventDispatcher.instance().addEventListener(
 					ZilliansEventDispatcher.event_cloud_response_auth_ok,
