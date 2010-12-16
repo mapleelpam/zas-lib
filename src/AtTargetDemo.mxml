@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="init()" xmlns:s="library://ns.adobe.com/flex/spark" width="847" height="431">
+	<mx:Script>
+		<![CDATA[
+			import com.zillians.logger.Logger;
+			import com.zillians.resource.Localizator;
+			import com.zillians.service.SystemService;
+			import com.zillians.cloud.ServiceEngine;
+			import com.zillians.proxy.SocketProxy;
+			import com.zillians.service.GameService;
+			import com.zillians.service.TokenService;
+			import com.zillians.event.ZilliansEvent;
+			import com.zillians.event.ZilliansEventDispatcher;
+			
+			import generated.atTarget.*;
+					
+			private var svcEngine:ServiceEngine; 
+			private function init():void{
+				SystemService.getInstance().addEventListener(
+					SystemService.t_sys_config_loaded
+					,afterSysConfigLoadSuccess);
+				SystemService.getInstance().addEventListener(
+					SystemService.t_sys_config_error
+					,system_load_error);
+				
+				SystemService.getInstance().initSystem("config/config_attarget.xml");
+				
+				ZilliansEventDispatcher.instance().addEventListener(
+					ZilliansEventDispatcher.event_cloud_response_auth_ok,
+					afterAuthOK);//身份验证服务器認證成功
+			}
+			
+			private function afterSysConfigLoadSuccess(e:Event):void{
+				if(Logger.getInstance().isInfo()){
+					Logger.getInstance().log(Localizator.getInstance().getText("system.init.success"),"AtTargetDemo");
+				}
+				debug.text += Localizator.getInstance().getText("system.init.success")+"\n";
+				SocketProxy.init(null);
+				svcEngine = new ServiceEngine();
+				currentState = "LoginState";
+				
+				ZilliansEventDispatcher.instance().addEventListener(
+					svcEngine.tokenService.getServiceName()+IOErrorEvent.IO_ERROR
+					, function (e:ZilliansEvent):void
+					{
+						debug.text += svcEngine.tokenService.getServiceName() + "-"
+									+Localizator.getInstance().getText("socket.ioError")+"\n";
+					} );
+				ZilliansEventDispatcher.instance().addEventListener(
+					svcEngine.tokenService.getServiceName()+SecurityErrorEvent.SECURITY_ERROR
+					, function (e:ZilliansEvent):void
+					{
+						debug.text += svcEngine.tokenService.getServiceName() + "-"
+							+Localizator.getInstance().getText("socket.securityError")+"\n";
+					} );
+			}
+			
+			private function system_load_error(e:Event):void{
+				debug.text += "(!) System Service Initialize Error\n";
+//				debug.text += Localizator.getInstance().getText("system.init.error")+"\n";
+//				can't access resource file right now
+			}
+			
+			private function loginButtonPress(e:MouseEvent):void{
+				svcEngine.cloudLogin( passInput.text, userInput.text );
+				debug.text +=  Localizator.getInstance().getText("ui.debug.try_login" )+"\n";
+			}
+			
+			private function afterAuthOK(event:Event):void
+			{
+				if(Logger.getInstance().isInfo()){
+					Logger.getInstance().log(Localizator.getInstance().getText("token.auth.ok"),"AtTargetDemo");
+				}
+				
+				debug.text +=  Localizator.getInstance().getText("ui.debug.logged_in" )+"\n";
+				
+				currentState = "HelloState";
+				// Attach Stub (Generate by compiler) and Service
+				svcEngine.gameService.gameFunctionDispatcher = new AtClientFunctionDispatcher(); 
+				
+				testzs.setPlayer = function( id:uint ):void
+				{
+					atext.text += "setPlayer("+id+")\n";
+				}
+				testzs.cantHearYou = function( id:uint ):void
+				{
+					atext.text += "cantHearYou("+id+")\n";
+				}
+				testzs.hearHello = function( id:uint ):void
+				{
+					atext.text += "hearYou("+id+")\n";
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:states>
+		<mx:State name="HelloState">
+			<mx:AddChild position="lastChild">
+				<mx:TextArea x="228" y="35" width="435" height="386" id="atext"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="682" y="39" label="SayHeloTo 1" click="testzs.sayHelloTo(1)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="682" y="74" label="SayHeloTo 2" click="testzs.sayHelloTo(2)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="682" y="106" label="SayHeloTo 3" click="testzs.sayHelloTo(3)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="682" y="141" label="SayHeloTo 4" click="testzs.sayHelloTo(4)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="682" y="176" label="SayHeloTo 5" click="testzs.sayHelloTo(5)"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{atext}" position="before">
+				<mx:Text x="230" y="10" text="Information From Cloud&#xd;"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="LoginState">
+			<mx:AddChild position="lastChild">
+				<s:Label x="382" y="113" text="UserName:&#xd;"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="503" y="239" label="Login" width="160" click="loginButtonPress(event)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="382" y="166" text="Password"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="503" y="112" text="maple_1" id="userInput"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput x="503" y="166" text="hello_2" displayAsPassword="true" id="passInput"/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	<mx:TextArea x="10" y="35" height="386" width="207"  id="debug"/>
+	<mx:Text x="19" y="10" text="Debug Information&#xd;"/>
+</mx:Application>

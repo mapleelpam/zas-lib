@@ -1,0 +1,18 @@
+<config>
+	<socketserver>
+		<ip>210.22.174.58</ip>
+		<port>6000</port>
+	</socketserver>
+	
+	<zillians>
+		<gamename>avatar</gamename>
+	</zillians>
+	
+	<logger level="4"/>
+	
+	<language defaultlan="zh_CN" currentlan="zh_CN">
+		<lan id="zh_CN" path="config/zh_CN.txt"/>
+	</language>
+
+	
+</config>
