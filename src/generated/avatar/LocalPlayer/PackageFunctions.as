@@ -1,4 +1,4 @@
-package generated.demo_avatar.LocalPlayer 
+package generated.avatar.LocalPlayer 
  { 
  	import flash.utils.ByteArray;
  	import flash.utils.Endian;

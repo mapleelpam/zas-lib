@@ -1,4 +1,4 @@
-package generated.demo_avatar.RemotePlayer 
+package generated.avatar.RemotePlayer 
  { 
  	import flash.utils.ByteArray;
  	import flash.utils.Endian;

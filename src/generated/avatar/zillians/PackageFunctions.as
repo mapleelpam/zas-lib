@@ -1,4 +1,4 @@
-package generated.demo_avatar.zillians 
+package generated.avatar.zillians 
  { 
  	import flash.utils.ByteArray;
  	import flash.utils.Endian;
