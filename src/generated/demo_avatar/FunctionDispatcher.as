@@ -2,8 +2,13 @@
  {
  	import com.zillians.protocol.messages.ClientRemoteProcedureCallMsg;
  	import com.zillians.service.gameservice.IGameFunctionDispatcher;
- 	import generated.atTarget.testzs;
  
+
+	import generated.demo_avatar.LocalPlayer.*;
+	import generated.demo_avatar.RemotePlayer.*;
+	import generated.demo_avatar.zillians.*;
+
+
  	public class FunctionDispatcher implements IGameFunctionDispatcher
  	{
  		public function FunctionDispatcher()
