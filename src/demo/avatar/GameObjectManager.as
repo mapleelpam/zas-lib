@@ -14,7 +14,8 @@ package demo.avatar
 	
 	import flashx.textLayout.formats.Float;
 	
-	import generated.avatar.LocalPlayer;
+//	import generated.avatar.LocalPlayer;
+	import generated.avatar.LocalPlayer.PackageFunctions;
 	
 	import mx.collections.*;
 	import mx.controls.Label;
@@ -99,7 +100,7 @@ package demo.avatar
 		//公有方法
 		public function changeAvatarID ( id:uint ):void {
 			currentPlayer.Avatar_id = id;
-			LocalPlayer.changeAvatarID(id);
+			generated.avatar.LocalPlayer.PackageFunctions .changeAvatarID(id);
 		}
 		
 		
@@ -159,7 +160,7 @@ package demo.avatar
 		private function onNetEventTimer( e:Event ):void {
 			if( currentPlayer.moveable || currentPlayer.network_dirty ) {
 				currentPlayer.network_dirty = false;
-				LocalPlayer.tryMove(currentPlayer.x, currentPlayer.y);
+				generated.avatar.LocalPlayer.PackageFunctions.tryMove(currentPlayer.x, currentPlayer.y);
 			}
 		}
 		
@@ -196,22 +197,22 @@ package demo.avatar
 			if ( e.keyCode == Keyboard.UP ) {
 				currentPlayer.dir = Direction.UP;
 				currentPlayer.moveable = true;
-				LocalPlayer.tryChangeDirection( currentPlayer.dir );
+				generated.avatar.LocalPlayer.PackageFunctions.tryChangeDirection( currentPlayer.dir );
 			}
 			else if ( e.keyCode == Keyboard.RIGHT ) {
 				currentPlayer.dir = Direction.RIGHT;
 				currentPlayer.moveable = true;
-				LocalPlayer.tryChangeDirection( currentPlayer.dir );
+				generated.avatar.LocalPlayer.PackageFunctions.tryChangeDirection( currentPlayer.dir );
 			}
 			else if ( e.keyCode == Keyboard.DOWN ) {
 				currentPlayer.dir = Direction.DOWN;
 				currentPlayer.moveable = true;
-				LocalPlayer.tryChangeDirection( currentPlayer.dir );
+				generated.avatar.LocalPlayer.PackageFunctions.tryChangeDirection( currentPlayer.dir );
 			}
 			else if ( e.keyCode == Keyboard.LEFT ) {
 				currentPlayer.dir = Direction.LEFT;
 				currentPlayer.moveable = true;
-				LocalPlayer.tryChangeDirection( currentPlayer.dir );
+				generated.avatar.LocalPlayer.PackageFunctions.tryChangeDirection( currentPlayer.dir );
 			}
 		}
 		
