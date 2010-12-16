@@ -1,4 +1,4 @@
- package generated.atTarget
+ package generated.demo_avatar
  {
  	import com.zillians.protocol.messages.ClientRemoteProcedureCallMsg;
  	import com.zillians.service.gameservice.IGameFunctionDispatcher;
