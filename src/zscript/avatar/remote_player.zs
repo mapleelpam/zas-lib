@@ -1,5 +1,5 @@
 
-package RemotePlayer
+package remote_player
 {
 	@client
 	function remoteTryMove( var ID:uint32, var x:uint32, var y:uint32):void;

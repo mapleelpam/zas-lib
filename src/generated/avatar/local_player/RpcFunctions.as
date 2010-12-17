@@ -1,4 +1,4 @@
-package generated.avatar.LocalPlayer 
+package generated.avatar.local_player 
  { 
  	import flash.utils.ByteArray;
  	import flash.utils.Endian;
@@ -7,9 +7,9 @@ package generated.avatar.LocalPlayer
  	import com.zillians.protocol.ProtocolID;
  	import com.zillians.proxy.SocketProxy;
  
- 	public class PackageFunctions
+ 	public class RpcFunctions
  	{
- 		public function PackageFunctions()
+ 		public function RpcFunctions()
  		{
 		}
  

@@ -4,8 +4,8 @@
  	import com.zillians.service.gameservice.IGameFunctionDispatcher;
  
 
-	import generated.avatar.LocalPlayer.*;
-	import generated.avatar.RemotePlayer.*;
+	import generated.avatar.local_player.*;
+	import generated.avatar.remote_player.*;
 	import generated.avatar.zillians.*;
 
 
@@ -21,8 +21,8 @@
 				case 6:
 				{
 					var ID_6:Number = msg.Parameters.readUnsignedInt();
-					if(generated.avatar.LocalPlayer.PackageFunctions.registerID != null )
-						generated.avatar.LocalPlayer.PackageFunctions.registerID( ID_6 );
+					if(generated.avatar.local_player.RpcFunctions.registerID != null )
+						generated.avatar.local_player.RpcFunctions.registerID( ID_6 );
 					else /*TODO*/;
 					return true;
 				}
@@ -31,8 +31,8 @@
 				{
 					var ID_11:Number = msg.Parameters.readUnsignedInt();
 					var avatar_id_11:Number = msg.Parameters.readUnsignedInt();
-					if(generated.avatar.RemotePlayer.PackageFunctions.remoteChangeAvatar != null )
-						generated.avatar.RemotePlayer.PackageFunctions.remoteChangeAvatar( ID_11, avatar_id_11 );
+					if(generated.avatar.remote_player.RpcFunctions.remoteChangeAvatar != null )
+						generated.avatar.remote_player.RpcFunctions.remoteChangeAvatar( ID_11, avatar_id_11 );
 					else /*TODO*/;
 					return true;
 				}
@@ -41,8 +41,8 @@
 				{
 					var ID_13:Number = msg.Parameters.readUnsignedInt();
 					var dir_13:Number = msg.Parameters.readUnsignedInt();
-					if(generated.avatar.RemotePlayer.PackageFunctions.remoteChangeDirection != null )
-						generated.avatar.RemotePlayer.PackageFunctions.remoteChangeDirection( ID_13, dir_13 );
+					if(generated.avatar.remote_player.RpcFunctions.remoteChangeDirection != null )
+						generated.avatar.remote_player.RpcFunctions.remoteChangeDirection( ID_13, dir_13 );
 					else /*TODO*/;
 					return true;
 				}
@@ -50,8 +50,8 @@
 				case 12:
 				{
 					var ID_12:Number = msg.Parameters.readUnsignedInt();
-					if(generated.avatar.RemotePlayer.PackageFunctions.remoteLogin != null )
-						generated.avatar.RemotePlayer.PackageFunctions.remoteLogin( ID_12 );
+					if(generated.avatar.remote_player.RpcFunctions.remoteLogin != null )
+						generated.avatar.remote_player.RpcFunctions.remoteLogin( ID_12 );
 					else /*TODO*/;
 					return true;
 				}
@@ -59,8 +59,8 @@
 				case 10:
 				{
 					var ID_10:Number = msg.Parameters.readUnsignedInt();
-					if(generated.avatar.RemotePlayer.PackageFunctions.remoteLogout != null )
-						generated.avatar.RemotePlayer.PackageFunctions.remoteLogout( ID_10 );
+					if(generated.avatar.remote_player.RpcFunctions.remoteLogout != null )
+						generated.avatar.remote_player.RpcFunctions.remoteLogout( ID_10 );
 					else /*TODO*/;
 					return true;
 				}
@@ -70,8 +70,8 @@
 					var ID_9:Number = msg.Parameters.readUnsignedInt();
 					var x_9:Number = msg.Parameters.readUnsignedInt();
 					var y_9:Number = msg.Parameters.readUnsignedInt();
-					if(generated.avatar.RemotePlayer.PackageFunctions.remoteTryMove != null )
-						generated.avatar.RemotePlayer.PackageFunctions.remoteTryMove( ID_9, x_9, y_9 );
+					if(generated.avatar.remote_player.RpcFunctions.remoteTryMove != null )
+						generated.avatar.remote_player.RpcFunctions.remoteTryMove( ID_9, x_9, y_9 );
 					else /*TODO*/;
 					return true;
 				}

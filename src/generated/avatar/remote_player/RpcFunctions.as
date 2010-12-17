@@ -1,4 +1,4 @@
-package generated.avatar.RemotePlayer 
+package generated.avatar.remote_player 
  { 
  	import flash.utils.ByteArray;
  	import flash.utils.Endian;
@@ -7,9 +7,9 @@ package generated.avatar.RemotePlayer
  	import com.zillians.protocol.ProtocolID;
  	import com.zillians.proxy.SocketProxy;
  
- 	public class PackageFunctions
+ 	public class RpcFunctions
  	{
- 		public function PackageFunctions()
+ 		public function RpcFunctions()
  		{
 		}
  

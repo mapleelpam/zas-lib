@@ -1,8 +1,8 @@
 
-package LocalPlayer
+package local_player
 {
 	import zillians.api.debug.*;
-	import RemotePlayer.*;
+	import remote_player.*;
 
 
 	object PlayerObject
