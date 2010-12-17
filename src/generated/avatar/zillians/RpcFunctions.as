@@ -7,9 +7,9 @@ package generated.avatar.zillians
  	import com.zillians.protocol.ProtocolID;
  	import com.zillians.proxy.SocketProxy;
  
- 	public class PackageFunctions
+ 	public class RpcFunctions
  	{
- 		public function PackageFunctions()
+ 		public function RpcFunctions()
  		{
 		}
  
