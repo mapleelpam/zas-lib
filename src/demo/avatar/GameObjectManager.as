@@ -14,8 +14,7 @@ package demo.avatar
 	
 	import flashx.textLayout.formats.Float;
 	
-//	import generated.avatar.LocalPlayer;
-	import generated.avatar.LocalPlayer.PackageFunctions;
+	import generated.avatar.local_player.RpcFunctions;
 	
 	import mx.collections.*;
 	import mx.controls.Label;
@@ -100,7 +99,7 @@ package demo.avatar
 		//公有方法
 		public function changeAvatarID ( id:uint ):void {
 			currentPlayer.Avatar_id = id;
-			generated.avatar.LocalPlayer.PackageFunctions .changeAvatarID(id);
+			generated.avatar.local_player.RpcFunctions.changeAvatarID(id);
 		}
 		
 		
@@ -160,7 +159,7 @@ package demo.avatar
 		private function onNetEventTimer( e:Event ):void {
 			if( currentPlayer.moveable || currentPlayer.network_dirty ) {
 				currentPlayer.network_dirty = false;
-				generated.avatar.LocalPlayer.PackageFunctions.tryMove(currentPlayer.x, currentPlayer.y);
+				generated.avatar.local_player.RpcFunctions.tryMove(currentPlayer.x, currentPlayer.y);
 			}
 		}
 		
@@ -197,22 +196,22 @@ package demo.avatar
 			if ( e.keyCode == Keyboard.UP ) {
 				currentPlayer.dir = Direction.UP;
 				currentPlayer.moveable = true;
-				generated.avatar.LocalPlayer.PackageFunctions.tryChangeDirection( currentPlayer.dir );
+				generated.avatar.local_player.RpcFunctions.tryChangeDirection( currentPlayer.dir );
 			}
 			else if ( e.keyCode == Keyboard.RIGHT ) {
 				currentPlayer.dir = Direction.RIGHT;
 				currentPlayer.moveable = true;
-				generated.avatar.LocalPlayer.PackageFunctions.tryChangeDirection( currentPlayer.dir );
+				generated.avatar.local_player.RpcFunctions.tryChangeDirection( currentPlayer.dir );
 			}
 			else if ( e.keyCode == Keyboard.DOWN ) {
 				currentPlayer.dir = Direction.DOWN;
 				currentPlayer.moveable = true;
-				generated.avatar.LocalPlayer.PackageFunctions.tryChangeDirection( currentPlayer.dir );
+				generated.avatar.local_player.RpcFunctions.tryChangeDirection( currentPlayer.dir );
 			}
 			else if ( e.keyCode == Keyboard.LEFT ) {
 				currentPlayer.dir = Direction.LEFT;
 				currentPlayer.moveable = true;
-				generated.avatar.LocalPlayer.PackageFunctions.tryChangeDirection( currentPlayer.dir );
+				generated.avatar.local_player.RpcFunctions.tryChangeDirection( currentPlayer.dir );
 			}
 		}
 		
