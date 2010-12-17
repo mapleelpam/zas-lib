@@ -7,7 +7,7 @@
 	frameRate="100"
 	creationComplete="creationComplete()"
 	enterFrame="enterFrame(event)"
-	currentState="Game" viewSourceURL="srcview/index.html">
+	currentState="Game">
 	<mx:states>
 		<mx:State
 			name="Game" id="gameState"
@@ -80,8 +80,8 @@
 			import demo.avatar.GameObjectManager;
 			
 			import generated.avatar.*;
-			import generated.avatar.LocalPlayer.PackageFunctions;
-			import generated.avatar.RemotePlayer.PackageFunctions;
+			import generated.avatar.local_player.RpcFunctions;
+			import generated.avatar.remote_player.RpcFunctions;
 			
 			import mx.events.FlexEvent;
 			
@@ -159,33 +159,33 @@
 				// Attach Stub (Generate by compiler) and Service
 				svcEngine.gameService.gameFunctionDispatcher = new generated.avatar.FunctionDispatcher();
 				
-				generated.avatar.LocalPlayer.PackageFunctions.registerID = function( id:uint ):void {
+				generated.avatar.local_player.RpcFunctions.registerID = function( id:uint ):void {
 					debugArea.text += Localizator.getInstance().getText("avatar.info.registerID" ) + id + "\n";
 					GameObjectManager.Instance.registerID( id );
 				}
 					
 				
-				generated.avatar.RemotePlayer.PackageFunctions.remoteLogin = function( id:uint ):void {
+				generated.avatar.remote_player.RpcFunctions.remoteLogin = function( id:uint ):void {
 					debugArea.text += Localizator.getInstance().getText("avatar.info.remoteLogin" ) + id + "\n";
 					GameObjectManager.Instance.remoteLogin( id );
 				}
 				
-				generated.avatar.RemotePlayer.PackageFunctions.remoteLogout = function( id:uint ):void {
+				generated.avatar.remote_player.RpcFunctions.remoteLogout = function( id:uint ):void {
 					debugArea.text += Localizator.getInstance().getText("avatar.info.remoteLogout" ) + id + "\n";
 					GameObjectManager.Instance.remoteLogout( id );
 				}
 				
-				generated.avatar.RemotePlayer.PackageFunctions.remoteTryMove = function( id:uint, x:uint, y:uint ):void {
+				generated.avatar.remote_player.RpcFunctions.remoteTryMove = function( id:uint, x:uint, y:uint ):void {
 					//debugArea.text += Localizator.getInstance().getText("avatar.info.remoteTryMove" ) + id + "\n";
 					GameObjectManager.Instance.remoteTryMove( id, x, y );
 				}
 				
-				generated.avatar.RemotePlayer.PackageFunctions.remoteChangeDirection = function( id:uint, dir:uint ):void {
+				generated.avatar.remote_player.RpcFunctions.remoteChangeDirection = function( id:uint, dir:uint ):void {
 					debugArea.text += Localizator.getInstance().getText("avatar.info.remoteChangeDirection" ) + id + "|" + dir + "\n";
 					GameObjectManager.Instance.remoteChangeDirection( id, dir );
 				}
 				
-				generated.avatar.RemotePlayer.PackageFunctions.remoteChangeAvatar = function( id:uint, avatar_id:uint ):void {
+				generated.avatar.remote_player.RpcFunctions.remoteChangeAvatar = function( id:uint, avatar_id:uint ):void {
 					debugArea.text += Localizator.getInstance().getText("avatar.info.remoteChangeAvatar" ) + id + "\n";
 					GameObjectManager.Instance.remoteChangeAvatar( id, avatar_id );
 				}
