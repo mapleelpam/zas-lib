@@ -27,7 +27,20 @@ package com.zillians.common.utilities
 					strBytes.endian = Endian.LITTLE_ENDIAN;
 					bt.readBytes( strBytes, 0, strLength );
 					returnVal[o.n]=strBytes.toString();
-				} else if(StringTWLUtil.equals(MessageBase.field_type_uuid,o.t+"")){
+				} else if(StringTWLUtil.equals(MessageBase.field_type_vector,o.t+"")){
+					var arrLength:uint = bt.readInt();
+					var arrBytes:ByteArray = new ByteArray();
+					arrBytes.endian = Endian.LITTLE_ENDIAN;
+					var vector:Vector.<UUID> = new Vector.<UUID>();
+					var one_uuid:UUID = null;
+					for (var i:int=0; i<arrLength; i++) {
+						uuid = new UUID();
+						one_uuid.readBytes( uuid,0,16);
+						vector.push(uuid);
+					}
+					returnVal[o.n]=vector;
+				}
+				else if(StringTWLUtil.equals(MessageBase.field_type_uuid,o.t+"")){
 					var uuid:UUID = new UUID();
 					bt.readBytes( uuid,0,16);
 					returnVal[o.n]=uuid;
@@ -52,7 +65,7 @@ package com.zillians.common.utilities
 		 * 
 		 */		
 		public static function convertObjectToByteArray(bt:ByteArray,model:MessageBase):ByteArray{
-				
+			
 			for each(var o:Object in model.fieldSequence){
 				if(StringTWLUtil.equals(MessageBase.field_type_string,o.t+"")){
 					bt.writeInt(String(model[o.n]).length);
@@ -66,6 +79,6 @@ package com.zillians.common.utilities
 			}
 			return bt;
 		}
-
+		
 	}
 }

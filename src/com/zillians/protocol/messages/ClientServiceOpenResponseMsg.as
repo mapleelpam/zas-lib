@@ -6,14 +6,14 @@ package com.zillians.protocol.messages
 	{
 		public var ServiceID:uint;
 		public var Result:int;
-		public var ObjectIDs:UUID;
+		public var ObjectIDs:Vector.<UUID>;
 		
 		public function ClientServiceOpenResponseMsg()
 		{
 			super();
 			addUIntField("ServiceID");
 			addUIntField("Result");
-			addUUIDField("ObjectIDs");
+			addVectorField("ObjectIDs");
 		}
 	}
 }
