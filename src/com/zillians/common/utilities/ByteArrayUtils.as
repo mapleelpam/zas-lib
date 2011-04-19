@@ -46,7 +46,7 @@ package com.zillians.common.utilities
 					returnVal[o.n]=uuid;
 				} else if(StringTWLUtil.equals(MessageBase.field_type_param,o.t+"")){
 					
-					var length:uint = bt.readUnsignedByte();
+					var length:uint = bt.readUnsignedInt();
 					var param:ByteArray = new ByteArray();
 					bt.readBytes( param, 0, length );
 					returnVal[o.n] = param;
